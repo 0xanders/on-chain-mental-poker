@@ -5,12 +5,13 @@ import { defineComponent, Type as RecsType, World } from "@latticexyz/recs";
 
 export function defineContractComponents(world: World) {
   return {
-    Counter: (() => {
-      const tableId = new TableId("", "Counter");
+    Game: (() => {
+      const tableId = new TableId("", "Game");
       return defineComponent(
         world,
         {
-          value: RecsType.Number,
+          actionCount: RecsType.BigInt,
+          monster: RecsType.String,
         },
         {
           metadata: {
