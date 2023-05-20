@@ -28,7 +28,7 @@ contract GameSystem is System {
     return CARDS;
   }
 
-  function isValidCard(bytes32 card) public view returns (bool) {
+  function isValidCard(bytes32 card) public pure returns (bool) {
     uint256 cardNumber = uint256(card);
     return cardNumber >= 1 && cardNumber <= 52;
   }
@@ -45,6 +45,7 @@ contract GameSystem is System {
     Game.pushPlayers(gameId, msg.sender);
     Game.setState(gameId, GameState.Join);
     Game.setMaxPlayers(gameId, 3);
+    Game.setCardsHash(gameId, CARDS);
   }
 
   function joinInGame(bytes32 gameId) public onlyState(gameId, GameState.Join) {
