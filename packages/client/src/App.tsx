@@ -3,7 +3,7 @@ import { useMUD } from "./MUDContext";
 import './app.css';
 import { world } from "./mud/world";
 import {ethers} from "ethers";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 enum GameState {
     Join,
     Shuffle,
@@ -33,24 +33,35 @@ const getGameState = (state: number) => {
     }
 }
 export const App = () => {
-  const {
+    const {
     components: { Game },
     systemCalls: { createGame, joinInGame },
     network,
-  } = useMUD();
-  const [gameId, setGameId] = useState('')
-  const byte32GameId = ethers.utils.formatBytes32String(gameId);
-  const gameEntity = world.registerEntity({ id: byte32GameId })
-  const game = useComponentValue(Game, gameEntity);
-  console.log('game-----')
-  console.log(game)
-  const createOrJoinGame = () => {
+    } = useMUD();
+    const [gameId, setGameId] = useState('')
+    const [isGameing, setIsGameing] = useState(false)
+    const byte32GameId = ethers.utils.formatBytes32String(gameId);
+    const gameEntity = world.registerEntity({ id: byte32GameId })
+    const game = useComponentValue(Game, gameEntity);
+    console.log('game-----')
+    console.log(game)
+    const createOrJoinGame = async () => {
       if (game) {
-          joinInGame(gameId)
+          await joinInGame(gameId)
       } else {
-          createGame(gameId)
+          await createGame(gameId)
       }
-  }
+      window.location.href = `${window.location.href}&gameId=gameId`
+    }
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params?.gameId) {
+            setGameId(params?.gameId)
+            setIsGameing(true)
+        }
+        setIsGameing(false)
+        console.log(888)
+    }, [window.location.search])
     return (
     <>
       <ul className={'game-warp'}>
