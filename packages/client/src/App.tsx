@@ -4,7 +4,9 @@ import { useMUD } from "./MUDContext";
 import './App.css';
 import { world } from "./mud/world";
 import {ethers} from "ethers";
+import {useEffect, useState} from "react";
 import { Poker } from "./Poker";
+import {useMount} from "ahooks";
 enum GameState {
     Join,
     Shuffle,
@@ -36,6 +38,7 @@ const getGameState = (state: number) => {
 export const App = () => {
     const {components: { Game }, systemCalls: { createGame, joinInGame }} = useMUD();
     const [gameId, setGameId] = useState('')
+    const [walletAddress, setWalletAddress] = useState('')
     const [isGameing, setIsGameing] = useState(false)
     const byte32GameId = ethers.utils.formatBytes32String(gameId);
     const gameEntity = world.registerEntity({ id: byte32GameId })
@@ -43,22 +46,25 @@ export const App = () => {
     console.log('game-----')
     console.log(game)
     const createOrJoinGame = async () => {
-      if (game) {
+      if (game && !game?.players.includes(walletAddress)) {
           await joinInGame(gameId)
-      } else {
+      } else if (!game){
           await createGame(gameId)
       }
       window.location.href = `${window.location.href}&gameId=${gameId}`
     }
-    useEffect(() => {
+    useMount(() => {
         const params = new URLSearchParams(window.location.search);
         if (params?.gameId) {
             setGameId(params?.gameId)
             setIsGameing(true)
+        } else {
+            setIsGameing(false)
         }
-        setIsGameing(false)
-        getBurnerWallet()
-    }, [window.location.search])
+        let privateKey = getBurnerWallet().value
+        let wallet = new ethers.Wallet(privateKey);
+        setWalletAddress(wallet.address.toLowerCase())
+    })
     return (
     <>
         {
