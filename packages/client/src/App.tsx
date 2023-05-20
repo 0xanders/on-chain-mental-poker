@@ -1,6 +1,6 @@
 import { useComponentValue } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
-import './app.scss';
+import './app.css';
 import { world } from "./mud/world";
 import {ethers} from "ethers";
 export const App = () => {
