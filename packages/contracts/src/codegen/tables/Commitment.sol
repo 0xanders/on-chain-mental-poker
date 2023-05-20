@@ -39,7 +39,7 @@ library Commitment {
 
   function getKeySchema() internal pure returns (Schema) {
     SchemaType[] memory _schema = new SchemaType[](2);
-    _schema[0] = SchemaType.UINT256;
+    _schema[0] = SchemaType.BYTES32;
     _schema[1] = SchemaType.ADDRESS;
 
     return SchemaLib.encode(_schema);
@@ -77,9 +77,9 @@ library Commitment {
   }
 
   /** Get msgToSign */
-  function getMsgToSign(uint256 gameId, address player) internal view returns (bytes32 msgToSign) {
+  function getMsgToSign(bytes32 gameId, address player) internal view returns (bytes32 msgToSign) {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 0);
@@ -87,9 +87,9 @@ library Commitment {
   }
 
   /** Get msgToSign (using the specified store) */
-  function getMsgToSign(IStore _store, uint256 gameId, address player) internal view returns (bytes32 msgToSign) {
+  function getMsgToSign(IStore _store, bytes32 gameId, address player) internal view returns (bytes32 msgToSign) {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = _store.getField(_tableId, _keyTuple, 0);
@@ -97,27 +97,27 @@ library Commitment {
   }
 
   /** Set msgToSign */
-  function setMsgToSign(uint256 gameId, address player, bytes32 msgToSign) internal {
+  function setMsgToSign(bytes32 gameId, address player, bytes32 msgToSign) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     StoreSwitch.setField(_tableId, _keyTuple, 0, abi.encodePacked((msgToSign)));
   }
 
   /** Set msgToSign (using the specified store) */
-  function setMsgToSign(IStore _store, uint256 gameId, address player, bytes32 msgToSign) internal {
+  function setMsgToSign(IStore _store, bytes32 gameId, address player, bytes32 msgToSign) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     _store.setField(_tableId, _keyTuple, 0, abi.encodePacked((msgToSign)));
   }
 
   /** Get resultOfSign */
-  function getResultOfSign(uint256 gameId, address player) internal view returns (bytes32 resultOfSign) {
+  function getResultOfSign(bytes32 gameId, address player) internal view returns (bytes32 resultOfSign) {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 1);
@@ -125,9 +125,9 @@ library Commitment {
   }
 
   /** Get resultOfSign (using the specified store) */
-  function getResultOfSign(IStore _store, uint256 gameId, address player) internal view returns (bytes32 resultOfSign) {
+  function getResultOfSign(IStore _store, bytes32 gameId, address player) internal view returns (bytes32 resultOfSign) {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = _store.getField(_tableId, _keyTuple, 1);
@@ -135,27 +135,27 @@ library Commitment {
   }
 
   /** Set resultOfSign */
-  function setResultOfSign(uint256 gameId, address player, bytes32 resultOfSign) internal {
+  function setResultOfSign(bytes32 gameId, address player, bytes32 resultOfSign) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     StoreSwitch.setField(_tableId, _keyTuple, 1, abi.encodePacked((resultOfSign)));
   }
 
   /** Set resultOfSign (using the specified store) */
-  function setResultOfSign(IStore _store, uint256 gameId, address player, bytes32 resultOfSign) internal {
+  function setResultOfSign(IStore _store, bytes32 gameId, address player, bytes32 resultOfSign) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     _store.setField(_tableId, _keyTuple, 1, abi.encodePacked((resultOfSign)));
   }
 
   /** Get key */
-  function getKey(uint256 gameId, address player) internal view returns (bytes32 key) {
+  function getKey(bytes32 gameId, address player) internal view returns (bytes32 key) {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 2);
@@ -163,9 +163,9 @@ library Commitment {
   }
 
   /** Get key (using the specified store) */
-  function getKey(IStore _store, uint256 gameId, address player) internal view returns (bytes32 key) {
+  function getKey(IStore _store, bytes32 gameId, address player) internal view returns (bytes32 key) {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = _store.getField(_tableId, _keyTuple, 2);
@@ -173,27 +173,27 @@ library Commitment {
   }
 
   /** Set key */
-  function setKey(uint256 gameId, address player, bytes32 key) internal {
+  function setKey(bytes32 gameId, address player, bytes32 key) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     StoreSwitch.setField(_tableId, _keyTuple, 2, abi.encodePacked((key)));
   }
 
   /** Set key (using the specified store) */
-  function setKey(IStore _store, uint256 gameId, address player, bytes32 key) internal {
+  function setKey(IStore _store, bytes32 gameId, address player, bytes32 key) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     _store.setField(_tableId, _keyTuple, 2, abi.encodePacked((key)));
   }
 
   /** Get the full data */
-  function get(uint256 gameId, address player) internal view returns (CommitmentData memory _table) {
+  function get(bytes32 gameId, address player) internal view returns (CommitmentData memory _table) {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = StoreSwitch.getRecord(_tableId, _keyTuple, getSchema());
@@ -201,9 +201,9 @@ library Commitment {
   }
 
   /** Get the full data (using the specified store) */
-  function get(IStore _store, uint256 gameId, address player) internal view returns (CommitmentData memory _table) {
+  function get(IStore _store, bytes32 gameId, address player) internal view returns (CommitmentData memory _table) {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = _store.getRecord(_tableId, _keyTuple, getSchema());
@@ -211,11 +211,11 @@ library Commitment {
   }
 
   /** Set the full data using individual values */
-  function set(uint256 gameId, address player, bytes32 msgToSign, bytes32 resultOfSign, bytes32 key) internal {
+  function set(bytes32 gameId, address player, bytes32 msgToSign, bytes32 resultOfSign, bytes32 key) internal {
     bytes memory _data = encode(msgToSign, resultOfSign, key);
 
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     StoreSwitch.setRecord(_tableId, _keyTuple, _data);
@@ -224,7 +224,7 @@ library Commitment {
   /** Set the full data using individual values (using the specified store) */
   function set(
     IStore _store,
-    uint256 gameId,
+    bytes32 gameId,
     address player,
     bytes32 msgToSign,
     bytes32 resultOfSign,
@@ -233,19 +233,19 @@ library Commitment {
     bytes memory _data = encode(msgToSign, resultOfSign, key);
 
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     _store.setRecord(_tableId, _keyTuple, _data);
   }
 
   /** Set the full data using the data struct */
-  function set(uint256 gameId, address player, CommitmentData memory _table) internal {
+  function set(bytes32 gameId, address player, CommitmentData memory _table) internal {
     set(gameId, player, _table.msgToSign, _table.resultOfSign, _table.key);
   }
 
   /** Set the full data using the data struct (using the specified store) */
-  function set(IStore _store, uint256 gameId, address player, CommitmentData memory _table) internal {
+  function set(IStore _store, bytes32 gameId, address player, CommitmentData memory _table) internal {
     set(_store, gameId, player, _table.msgToSign, _table.resultOfSign, _table.key);
   }
 
@@ -264,25 +264,25 @@ library Commitment {
   }
 
   /** Encode keys as a bytes32 array using this table's schema */
-  function encodeKeyTuple(uint256 gameId, address player) internal pure returns (bytes32[] memory _keyTuple) {
+  function encodeKeyTuple(bytes32 gameId, address player) internal pure returns (bytes32[] memory _keyTuple) {
     _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
   }
 
   /* Delete all data for given keys */
-  function deleteRecord(uint256 gameId, address player) internal {
+  function deleteRecord(bytes32 gameId, address player) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     StoreSwitch.deleteRecord(_tableId, _keyTuple);
   }
 
   /* Delete all data for given keys (using the specified store) */
-  function deleteRecord(IStore _store, uint256 gameId, address player) internal {
+  function deleteRecord(IStore _store, bytes32 gameId, address player) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
-    _keyTuple[0] = bytes32(uint256((gameId)));
+    _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     _store.deleteRecord(_tableId, _keyTuple);
