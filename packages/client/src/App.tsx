@@ -3,17 +3,26 @@ import { useMUD } from "./MUDContext";
 import './app.css';
 import { world } from "./mud/world";
 import {ethers} from "ethers";
+import {useState} from "react";
 export const App = () => {
   const {
     components: { Game },
     systemCalls: { createGame, joinInGame },
     network,
   } = useMUD();
-  const byte32GameId = ethers.utils.formatBytes32String('100');
+  const [gameId, setGameId] = useState('')
+  const byte32GameId = ethers.utils.formatBytes32String(gameId);
   const gameEntity = world.registerEntity({ id: byte32GameId })
   const game = useComponentValue(Game, gameEntity);
   console.log('game-----')
   console.log(game)
+  const createOrJoinGame = () => {
+      if (game) {
+          joinInGame(gameId)
+      } else {
+          createGame(gameId)
+      }
+  }
   return (
     <>
       <div>
@@ -21,21 +30,13 @@ export const App = () => {
           singletonEntity: <span></span>
       </div>
         <div className={'form'}>
-            <input placeholder={'Please enter gameID'}/>
-            <div className={'button-warp'}>
-                <button>Create Game</button>
-                <button>Join Game</button>
+            <input placeholder={'Please enter gameID'} onChange={(e: any) => {
+                setGameId(e.target.value || '')
+            }}/>
+            <div className={'button-warp'} onClick={createOrJoinGame}>
+                <button>{game ? 'Join Game' : 'Create Game'}</button>
             </div>
         </div>
-      <button
-        type="button"
-        onClick={async (event) => {
-          event.preventDefault();
-            await createGame('100')
-            // await joinInGame('100')
-        }}>
-          createGame
-      </button>
     </>
   );
 };
