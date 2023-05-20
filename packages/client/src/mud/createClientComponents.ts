@@ -6,5 +6,8 @@ export function createClientComponents({ components }: SetupNetworkResult) {
   return {
     ...components,
     // add your client components or overrides here
+    Game:components.Game,
+    Commitment:components.Commitment,
+    HandCard:components.HandCard,
   };
 }
