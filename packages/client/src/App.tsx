@@ -1,9 +1,10 @@
 import { useComponentValue } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
-import './app.css';
+import './App.css';
 import { world } from "./mud/world";
 import {ethers} from "ethers";
 import {useEffect, useState} from "react";
+import { Poker } from "./Poker";
 enum GameState {
     Join,
     Shuffle,
@@ -51,7 +52,7 @@ export const App = () => {
       } else {
           await createGame(gameId)
       }
-      window.location.href = `${window.location.href}&gameId=gameId`
+      window.location.href = `${window.location.href}&gameId=${gameId}`
     }
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -60,24 +61,27 @@ export const App = () => {
             setIsGameing(true)
         }
         setIsGameing(false)
-        console.log(888)
     }, [window.location.search])
     return (
     <>
-      <ul className={'game-warp'}>
-          <li>state: <span>{game?.state}({getGameState(game?.state || 0)})</span></li>
-          <li>turn: <span>{game?.turn}</span></li>
-          <li>cardIndex: <span>{game?.cardIndex}</span></li>
-          {/*<li>winner: <span>{game?.winner}</span></li>*/}
-          {/*<li>cardsHash: <span>{game?.cardsHash}</span></li>*/}
-          <li>players: <span>{game?.players}</span></li>
-      </ul>
-        <div className={'form'}>
-            <input placeholder={'Please enter gameID'} onChange={(e: any) => {
-                setGameId(e.target.value || '')
-            }}/>
-            <button onClick={createOrJoinGame}>{game ? 'Join Game' : 'Create Game'}</button>
-        </div>
+        {
+            isGameing ? <Poker game={game}/> : <>
+                <ul className={'game-warp'}>
+                    <li>state: <span>{game?.state}({getGameState(game?.state)})</span></li>
+                    <li>turn: <span>{game?.turn}</span></li>
+                    <li>cardIndex: <span>{game?.cardIndex}</span></li>
+                    {/*<li>winner: <span>{game?.winner}</span></li>*/}
+                    {/*<li>cardsHash: <span>{game?.cardsHash}</span></li>*/}
+                    <li>players: <span>{game?.players}</span></li>
+                </ul>
+                <div className={'form'}>
+                    <input placeholder={'Please enter gameID'} onChange={(e: any) => {
+                        setGameId(e.target.value || '')
+                    }}/>
+                    <button onClick={createOrJoinGame}>{game ? 'Join Game' : 'Create Game'}</button>
+                </div>
+            </>
+        }
     </>
   );
 };
