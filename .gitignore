@@ -2,3 +2,7 @@ node_modules
 
 tmp_code/node_modules
 tmp_code/package-lock.json
+/package-lock.json
+/.idea
+/.vscode
+*.idea

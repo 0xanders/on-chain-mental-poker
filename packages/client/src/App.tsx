@@ -1,9 +1,9 @@
 import { useComponentValue } from "@latticexyz/react";
+import { getBurnerWallet } from "@latticexyz/std-client";
 import { useMUD } from "./MUDContext";
 import './App.css';
 import { world } from "./mud/world";
 import {ethers} from "ethers";
-import {useEffect, useState} from "react";
 import { Poker } from "./Poker";
 enum GameState {
     Join,
@@ -34,11 +34,7 @@ const getGameState = (state: number) => {
     }
 }
 export const App = () => {
-    const {
-    components: { Game },
-    systemCalls: { createGame, joinInGame },
-    network,
-    } = useMUD();
+    const {components: { Game }, systemCalls: { createGame, joinInGame }} = useMUD();
     const [gameId, setGameId] = useState('')
     const [isGameing, setIsGameing] = useState(false)
     const byte32GameId = ethers.utils.formatBytes32String(gameId);
@@ -61,6 +57,7 @@ export const App = () => {
             setIsGameing(true)
         }
         setIsGameing(false)
+        getBurnerWallet()
     }, [window.location.search])
     return (
     <>
