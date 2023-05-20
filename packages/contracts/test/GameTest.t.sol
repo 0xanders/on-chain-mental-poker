@@ -9,7 +9,6 @@ import { IWorld } from "../src/codegen/world/IWorld.sol";
 
 contract GameTest is MudV2Test {
   IWorld public world;
-  GameSystem public gameSys;
 
   function setUp() public override {
     super.setUp();
@@ -27,6 +26,15 @@ contract GameTest is MudV2Test {
 
   function testCreateGame() public {
     world.createGame("0x1");
-  }
 
+    vm.expectRevert("Invalid Player");
+    world.joinInGame("0x1");
+    
+    address alice = address(1234);
+    vm.startPrank(alice);
+    // behave as alice
+    world.joinInGame("0x1");
+    vm.stopPrank();
+
+  }
 }

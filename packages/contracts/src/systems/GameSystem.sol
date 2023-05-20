@@ -115,6 +115,6 @@ contract GameSystem is System {
       }
     }
 
-    require(isIn, "Invalid Player");
+    require(!isIn, "Invalid Player");
   }
 }
