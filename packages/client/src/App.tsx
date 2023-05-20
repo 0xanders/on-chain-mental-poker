@@ -14,7 +14,7 @@ export const App = () => {
   return (
     <>
       <div>
-        Counter: <span>{game?.cardHash}</span>
+        Counter: <span>{game?.state}</span>
       </div>
         <div className={'form'}>
             <input placeholder={'Please enter gameID'}/>
