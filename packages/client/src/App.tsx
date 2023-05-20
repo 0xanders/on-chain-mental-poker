@@ -1,6 +1,5 @@
 import { useComponentValue } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
-import { ethers } from "ethers";
 
 export const App = () => {
   const {
@@ -21,8 +20,7 @@ export const App = () => {
         type="button"
         onClick={async (event) => {
           event.preventDefault();
-          const byte32GameId = ethers.utils.formatBytes32String('100');
-          console.log("new counter value:", await createGame(byte32GameId));
+          console.log("new counter value:", await createGame('100'));
         }}>
           createGame
       </button>
