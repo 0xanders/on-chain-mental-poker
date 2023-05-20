@@ -9,6 +9,7 @@ import { IWorld } from "../src/codegen/world/IWorld.sol";
 
 contract GameTest is MudV2Test {
   IWorld public world;
+  GameSystem public gameSys;
 
   function setUp() public override {
     super.setUp();
@@ -24,19 +25,8 @@ contract GameTest is MudV2Test {
     assertTrue(codeSize > 0);
   }
 
-  function testAlice() public {
-    address payable alice = payable(address(0x1337));
-    // Access Hevm via the `vm` instance
-    vm.startPrank(alice);
-
-    // Assert and log using Dappsys Test
-    // assertEq(dai.balanceOf(alice), 10000e18);
-
-    // Log with the Hardhat `console` (`console2`)
-    console.log(alice.balance);
-
-    // Use anything from the Forge Std std-libraries
-    // deal(address(dai), alice, 10000e18);
+  function testCreateGame() public {
+    world.createGame("0x1");
   }
 
 }
