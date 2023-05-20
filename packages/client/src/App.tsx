@@ -14,7 +14,7 @@ export const App = () => {
   return (
     <>
       <div>
-        Counter: <span>{game?.state}</span>
+          gameState: <span>{game?.state}</span>
       </div>
         <div className={'form'}>
             <input placeholder={'Please enter gameID'}/>
@@ -27,7 +27,7 @@ export const App = () => {
         type="button"
         onClick={async (event) => {
           event.preventDefault();
-            await createGame('100')
+            // await createGame('100')
             await joinGame('100')
         }}>
           createGame
