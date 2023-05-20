@@ -1,17 +1,23 @@
 .game-warp {
     list-style: none;
-    text-align: center;
+    text-align: left;
 }
 .game-warp li {
     display: inline-block;
     padding: 10px;
+    line-height: 18px;
+    margin-top: 10px;
+}
+.game-warp li span{
+    color: green;
 }
 .form {
     display: block;
-    width: 300px;
+    width: 400px;
     height: 300px;
     margin: 20px auto;
     font-size: 0;
+    text-align: center;
 }
 .form input {
     display: inline-block;
