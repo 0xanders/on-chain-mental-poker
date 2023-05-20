@@ -256,7 +256,6 @@ contract GameSystem is System {
                 state[n] = state[m];
                 state[m] = temp1;
 
-                //output = state[state[i] + state[j]] ^ input
                 uint8 temp2 = uint8(state[n]) + uint8(state[m]);
                 temp2 = uint8(state[temp2]);
                 temp2 ^= uint8(input[i]);
