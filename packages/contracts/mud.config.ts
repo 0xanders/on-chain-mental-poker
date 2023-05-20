@@ -16,7 +16,7 @@ export default mudConfig({
         maxPlayers: "uint256",
         players: "address[]",
         turn: "uint8",
-        cardsHash: "bytes32[52]",//加密后的结果
+        cardsHash: "bytes32[52]",
         cardIndex:"uint8",
         winner:"address"
       },

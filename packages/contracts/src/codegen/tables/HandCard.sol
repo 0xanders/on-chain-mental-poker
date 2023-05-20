@@ -17,22 +17,22 @@ import { EncodeArray } from "@latticexyz/store/src/tightcoder/EncodeArray.sol";
 import { Schema, SchemaLib } from "@latticexyz/store/src/Schema.sol";
 import { PackedCounter, PackedCounterLib } from "@latticexyz/store/src/PackedCounter.sol";
 
-bytes32 constant _tableId = bytes32(abi.encodePacked(bytes16(""), bytes16("Commitment")));
-bytes32 constant CommitmentTableId = _tableId;
+bytes32 constant _tableId = bytes32(abi.encodePacked(bytes16(""), bytes16("HandCard")));
+bytes32 constant HandCardTableId = _tableId;
 
-struct CommitmentData {
-  bytes32 msgToSign;
-  bytes32 resultOfSign;
-  bytes32 key;
+struct HandCardData {
+  bytes32 tempCardHash;
+  bytes32 cardHash;
+  uint32 card;
 }
 
-library Commitment {
+library HandCard {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
     SchemaType[] memory _schema = new SchemaType[](3);
     _schema[0] = SchemaType.BYTES32;
     _schema[1] = SchemaType.BYTES32;
-    _schema[2] = SchemaType.BYTES32;
+    _schema[2] = SchemaType.UINT32;
 
     return SchemaLib.encode(_schema);
   }
@@ -48,10 +48,10 @@ library Commitment {
   /** Get the table's metadata */
   function getMetadata() internal pure returns (string memory, string[] memory) {
     string[] memory _fieldNames = new string[](3);
-    _fieldNames[0] = "msgToSign";
-    _fieldNames[1] = "resultOfSign";
-    _fieldNames[2] = "key";
-    return ("Commitment", _fieldNames);
+    _fieldNames[0] = "tempCardHash";
+    _fieldNames[1] = "cardHash";
+    _fieldNames[2] = "card";
+    return ("HandCard", _fieldNames);
   }
 
   /** Register the table's schema */
@@ -76,8 +76,8 @@ library Commitment {
     _store.setMetadata(_tableId, _tableName, _fieldNames);
   }
 
-  /** Get msgToSign */
-  function getMsgToSign(uint256 gameId, address player) internal view returns (bytes32 msgToSign) {
+  /** Get tempCardHash */
+  function getTempCardHash(uint256 gameId, address player) internal view returns (bytes32 tempCardHash) {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
@@ -86,8 +86,8 @@ library Commitment {
     return (Bytes.slice32(_blob, 0));
   }
 
-  /** Get msgToSign (using the specified store) */
-  function getMsgToSign(IStore _store, uint256 gameId, address player) internal view returns (bytes32 msgToSign) {
+  /** Get tempCardHash (using the specified store) */
+  function getTempCardHash(IStore _store, uint256 gameId, address player) internal view returns (bytes32 tempCardHash) {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
@@ -96,26 +96,26 @@ library Commitment {
     return (Bytes.slice32(_blob, 0));
   }
 
-  /** Set msgToSign */
-  function setMsgToSign(uint256 gameId, address player, bytes32 msgToSign) internal {
+  /** Set tempCardHash */
+  function setTempCardHash(uint256 gameId, address player, bytes32 tempCardHash) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
-    StoreSwitch.setField(_tableId, _keyTuple, 0, abi.encodePacked((msgToSign)));
+    StoreSwitch.setField(_tableId, _keyTuple, 0, abi.encodePacked((tempCardHash)));
   }
 
-  /** Set msgToSign (using the specified store) */
-  function setMsgToSign(IStore _store, uint256 gameId, address player, bytes32 msgToSign) internal {
+  /** Set tempCardHash (using the specified store) */
+  function setTempCardHash(IStore _store, uint256 gameId, address player, bytes32 tempCardHash) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
-    _store.setField(_tableId, _keyTuple, 0, abi.encodePacked((msgToSign)));
+    _store.setField(_tableId, _keyTuple, 0, abi.encodePacked((tempCardHash)));
   }
 
-  /** Get resultOfSign */
-  function getResultOfSign(uint256 gameId, address player) internal view returns (bytes32 resultOfSign) {
+  /** Get cardHash */
+  function getCardHash(uint256 gameId, address player) internal view returns (bytes32 cardHash) {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
@@ -124,8 +124,8 @@ library Commitment {
     return (Bytes.slice32(_blob, 0));
   }
 
-  /** Get resultOfSign (using the specified store) */
-  function getResultOfSign(IStore _store, uint256 gameId, address player) internal view returns (bytes32 resultOfSign) {
+  /** Get cardHash (using the specified store) */
+  function getCardHash(IStore _store, uint256 gameId, address player) internal view returns (bytes32 cardHash) {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
@@ -134,64 +134,64 @@ library Commitment {
     return (Bytes.slice32(_blob, 0));
   }
 
-  /** Set resultOfSign */
-  function setResultOfSign(uint256 gameId, address player, bytes32 resultOfSign) internal {
+  /** Set cardHash */
+  function setCardHash(uint256 gameId, address player, bytes32 cardHash) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
-    StoreSwitch.setField(_tableId, _keyTuple, 1, abi.encodePacked((resultOfSign)));
+    StoreSwitch.setField(_tableId, _keyTuple, 1, abi.encodePacked((cardHash)));
   }
 
-  /** Set resultOfSign (using the specified store) */
-  function setResultOfSign(IStore _store, uint256 gameId, address player, bytes32 resultOfSign) internal {
+  /** Set cardHash (using the specified store) */
+  function setCardHash(IStore _store, uint256 gameId, address player, bytes32 cardHash) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
-    _store.setField(_tableId, _keyTuple, 1, abi.encodePacked((resultOfSign)));
+    _store.setField(_tableId, _keyTuple, 1, abi.encodePacked((cardHash)));
   }
 
-  /** Get key */
-  function getKey(uint256 gameId, address player) internal view returns (bytes32 key) {
+  /** Get card */
+  function getCard(uint256 gameId, address player) internal view returns (uint32 card) {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 2);
-    return (Bytes.slice32(_blob, 0));
+    return (uint32(Bytes.slice4(_blob, 0)));
   }
 
-  /** Get key (using the specified store) */
-  function getKey(IStore _store, uint256 gameId, address player) internal view returns (bytes32 key) {
+  /** Get card (using the specified store) */
+  function getCard(IStore _store, uint256 gameId, address player) internal view returns (uint32 card) {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = _store.getField(_tableId, _keyTuple, 2);
-    return (Bytes.slice32(_blob, 0));
+    return (uint32(Bytes.slice4(_blob, 0)));
   }
 
-  /** Set key */
-  function setKey(uint256 gameId, address player, bytes32 key) internal {
+  /** Set card */
+  function setCard(uint256 gameId, address player, uint32 card) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
-    StoreSwitch.setField(_tableId, _keyTuple, 2, abi.encodePacked((key)));
+    StoreSwitch.setField(_tableId, _keyTuple, 2, abi.encodePacked((card)));
   }
 
-  /** Set key (using the specified store) */
-  function setKey(IStore _store, uint256 gameId, address player, bytes32 key) internal {
+  /** Set card (using the specified store) */
+  function setCard(IStore _store, uint256 gameId, address player, uint32 card) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
-    _store.setField(_tableId, _keyTuple, 2, abi.encodePacked((key)));
+    _store.setField(_tableId, _keyTuple, 2, abi.encodePacked((card)));
   }
 
   /** Get the full data */
-  function get(uint256 gameId, address player) internal view returns (CommitmentData memory _table) {
+  function get(uint256 gameId, address player) internal view returns (HandCardData memory _table) {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
@@ -201,7 +201,7 @@ library Commitment {
   }
 
   /** Get the full data (using the specified store) */
-  function get(IStore _store, uint256 gameId, address player) internal view returns (CommitmentData memory _table) {
+  function get(IStore _store, uint256 gameId, address player) internal view returns (HandCardData memory _table) {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
@@ -211,8 +211,8 @@ library Commitment {
   }
 
   /** Set the full data using individual values */
-  function set(uint256 gameId, address player, bytes32 msgToSign, bytes32 resultOfSign, bytes32 key) internal {
-    bytes memory _data = encode(msgToSign, resultOfSign, key);
+  function set(uint256 gameId, address player, bytes32 tempCardHash, bytes32 cardHash, uint32 card) internal {
+    bytes memory _data = encode(tempCardHash, cardHash, card);
 
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
@@ -226,11 +226,11 @@ library Commitment {
     IStore _store,
     uint256 gameId,
     address player,
-    bytes32 msgToSign,
-    bytes32 resultOfSign,
-    bytes32 key
+    bytes32 tempCardHash,
+    bytes32 cardHash,
+    uint32 card
   ) internal {
-    bytes memory _data = encode(msgToSign, resultOfSign, key);
+    bytes memory _data = encode(tempCardHash, cardHash, card);
 
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32(uint256((gameId)));
@@ -240,27 +240,27 @@ library Commitment {
   }
 
   /** Set the full data using the data struct */
-  function set(uint256 gameId, address player, CommitmentData memory _table) internal {
-    set(gameId, player, _table.msgToSign, _table.resultOfSign, _table.key);
+  function set(uint256 gameId, address player, HandCardData memory _table) internal {
+    set(gameId, player, _table.tempCardHash, _table.cardHash, _table.card);
   }
 
   /** Set the full data using the data struct (using the specified store) */
-  function set(IStore _store, uint256 gameId, address player, CommitmentData memory _table) internal {
-    set(_store, gameId, player, _table.msgToSign, _table.resultOfSign, _table.key);
+  function set(IStore _store, uint256 gameId, address player, HandCardData memory _table) internal {
+    set(_store, gameId, player, _table.tempCardHash, _table.cardHash, _table.card);
   }
 
   /** Decode the tightly packed blob using this table's schema */
-  function decode(bytes memory _blob) internal pure returns (CommitmentData memory _table) {
-    _table.msgToSign = (Bytes.slice32(_blob, 0));
+  function decode(bytes memory _blob) internal pure returns (HandCardData memory _table) {
+    _table.tempCardHash = (Bytes.slice32(_blob, 0));
 
-    _table.resultOfSign = (Bytes.slice32(_blob, 32));
+    _table.cardHash = (Bytes.slice32(_blob, 32));
 
-    _table.key = (Bytes.slice32(_blob, 64));
+    _table.card = (uint32(Bytes.slice4(_blob, 64)));
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(bytes32 msgToSign, bytes32 resultOfSign, bytes32 key) internal view returns (bytes memory) {
-    return abi.encodePacked(msgToSign, resultOfSign, key);
+  function encode(bytes32 tempCardHash, bytes32 cardHash, uint32 card) internal view returns (bytes memory) {
+    return abi.encodePacked(tempCardHash, cardHash, card);
   }
 
   /** Encode keys as a bytes32 array using this table's schema */
