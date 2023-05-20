@@ -57,8 +57,8 @@ export const App = () => {
           <li>state: <span>{game?.state}({getGameState(game?.state || 0)})</span></li>
           <li>turn: <span>{game?.turn}</span></li>
           <li>cardIndex: <span>{game?.cardIndex}</span></li>
-          <li>winner: <span>{game?.winner}</span></li>
-          <li>cardsHash: <span>{game?.cardsHash}</span></li>
+          {/*<li>winner: <span>{game?.winner}</span></li>*/}
+          {/*<li>cardsHash: <span>{game?.cardsHash}</span></li>*/}
           <li>players: <span>{game?.players}</span></li>
       </ul>
         <div className={'form'}>
