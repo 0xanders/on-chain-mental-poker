@@ -50,7 +50,7 @@ export function defineContractComponents(world: World) {
         {
           tempCardHash: RecsType.String,
           cardHash: RecsType.String,
-          card: RecsType.Number,
+          card: RecsType.String,
         },
         {
           metadata: {

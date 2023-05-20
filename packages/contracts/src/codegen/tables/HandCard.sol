@@ -23,7 +23,7 @@ bytes32 constant HandCardTableId = _tableId;
 struct HandCardData {
   bytes32 tempCardHash;
   bytes32 cardHash;
-  uint32 card;
+  bytes32 card;
 }
 
 library HandCard {
@@ -32,7 +32,7 @@ library HandCard {
     SchemaType[] memory _schema = new SchemaType[](3);
     _schema[0] = SchemaType.BYTES32;
     _schema[1] = SchemaType.BYTES32;
-    _schema[2] = SchemaType.UINT32;
+    _schema[2] = SchemaType.BYTES32;
 
     return SchemaLib.encode(_schema);
   }
@@ -153,27 +153,27 @@ library HandCard {
   }
 
   /** Get card */
-  function getCard(bytes32 gameId, address player) internal view returns (uint32 card) {
+  function getCard(bytes32 gameId, address player) internal view returns (bytes32 card) {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 2);
-    return (uint32(Bytes.slice4(_blob, 0)));
+    return (Bytes.slice32(_blob, 0));
   }
 
   /** Get card (using the specified store) */
-  function getCard(IStore _store, bytes32 gameId, address player) internal view returns (uint32 card) {
+  function getCard(IStore _store, bytes32 gameId, address player) internal view returns (bytes32 card) {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
 
     bytes memory _blob = _store.getField(_tableId, _keyTuple, 2);
-    return (uint32(Bytes.slice4(_blob, 0)));
+    return (Bytes.slice32(_blob, 0));
   }
 
   /** Set card */
-  function setCard(bytes32 gameId, address player, uint32 card) internal {
+  function setCard(bytes32 gameId, address player, bytes32 card) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
@@ -182,7 +182,7 @@ library HandCard {
   }
 
   /** Set card (using the specified store) */
-  function setCard(IStore _store, bytes32 gameId, address player, uint32 card) internal {
+  function setCard(IStore _store, bytes32 gameId, address player, bytes32 card) internal {
     bytes32[] memory _keyTuple = new bytes32[](2);
     _keyTuple[0] = bytes32((gameId));
     _keyTuple[1] = bytes32(uint256(uint160((player))));
@@ -211,7 +211,7 @@ library HandCard {
   }
 
   /** Set the full data using individual values */
-  function set(bytes32 gameId, address player, bytes32 tempCardHash, bytes32 cardHash, uint32 card) internal {
+  function set(bytes32 gameId, address player, bytes32 tempCardHash, bytes32 cardHash, bytes32 card) internal {
     bytes memory _data = encode(tempCardHash, cardHash, card);
 
     bytes32[] memory _keyTuple = new bytes32[](2);
@@ -228,7 +228,7 @@ library HandCard {
     address player,
     bytes32 tempCardHash,
     bytes32 cardHash,
-    uint32 card
+    bytes32 card
   ) internal {
     bytes memory _data = encode(tempCardHash, cardHash, card);
 
@@ -255,11 +255,11 @@ library HandCard {
 
     _table.cardHash = (Bytes.slice32(_blob, 32));
 
-    _table.card = (uint32(Bytes.slice4(_blob, 64)));
+    _table.card = (Bytes.slice32(_blob, 64));
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(bytes32 tempCardHash, bytes32 cardHash, uint32 card) internal view returns (bytes memory) {
+  function encode(bytes32 tempCardHash, bytes32 cardHash, bytes32 card) internal view returns (bytes memory) {
     return abi.encodePacked(tempCardHash, cardHash, card);
   }
 
