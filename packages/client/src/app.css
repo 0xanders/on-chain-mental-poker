@@ -1,17 +1,24 @@
+.game-warp {
+    list-style: none;
+}
+.game-warp li {
+    display: inline-block;
+    padding: 10px;
+}
 .form {
     display: block;
     width: 300px;
     height: 300px;
     margin: 20px auto;
-    border: solid 1px green;
-    padding: 20px;
+    font-size: 0;
 }
 .form input {
-    width: calc(100% - 40px);
+    display: inline-block;
+    width: 200px;
     height: 40px;
     line-height: 38px;
     border-radius: 8px;
-    border: 2px solid red;
+    border: 1px solid #e8e8e8;
     color: #333;
     padding: 0 15px;
     font-size: 16px;
@@ -19,29 +26,23 @@
     vertical-align: middle;
     font-weight: bold;
     position: relative;
-
 }
 .form input ::-webkit-input-placeholder {
      color: #e2e2e2;
 }
-.form .button-warp {
-    display: block;
-    text-align: center;
-}
-.form .button-warp button {
-    width: 100%;
-    height: 100%;
+.form button {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
     padding: 0 10px;
     box-sizing: border-box;
     user-select: none;
     font-size: 16px;
     color: #333;
     border-radius: 8px;
-    cursor: pointer;
-    background-color: transparent;
+    border: solid 1px #FFCB00;
+    background-color: #FFCB00;
     margin: 0 20px;
-}
-.form .button-warp button:hover {
-     border-color: #FFCB00;
-     background-color: #FFCB00;
+    cursor: pointer;
+    vertical-align: middle;
 }
