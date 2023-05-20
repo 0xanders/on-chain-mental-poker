@@ -61,7 +61,7 @@ contract("test RC4", async accounts => {
 
     });
 
-    it("test js encrypt", async () => {
+    it("test js encrypt bytes32", async () => {
 
        
         // data example from contract
@@ -86,5 +86,56 @@ contract("test RC4", async accounts => {
         expect(output2).to.equal(inputString);
 
         console.log({inputByte32,inputString, key,keyHex, keyByte32, keyString, output1,output1Byte32, output2});
-    }); 
+    });
+
+    it("test js encrypt a b c", async () => {
+
+       
+        // data example from contract       
+        let inputString =  'abcdefgh';
+        
+
+        let keyA = "keyA";
+        let keyB = "keyB";
+        let keyC = "keyC";
+        
+        let outputA =  rc4js.encrypt(inputString,keyA);
+       
+       
+        let outputAB =  rc4js.encrypt(outputA,keyB);
+       
+        let outputABC =  rc4js.encrypt(outputAB,keyC);
+
+
+        let xBC = rc4js.encrypt(outputABC,keyA);
+        let xB = rc4js.encrypt(xBC,keyC);
+        let xC = rc4js.encrypt(xBC,keyB);
+
+        let x1 = rc4js.encrypt(xB,keyB);
+        let x2 = rc4js.encrypt(xC,keyC);
+
+        expect(x1).to.equal(x2);
+        expect(x1).to.equal(inputString);
+
+        let yAC = rc4js.encrypt(outputABC,keyB);
+        let yA = rc4js.encrypt(yAC,keyC);
+        let yC = rc4js.encrypt(yAC,keyA);
+
+        let y1 = rc4js.encrypt(yA,keyA);
+        let y2 = rc4js.encrypt(yC,keyC);
+
+        expect(y1).to.equal(y2);
+        expect(y1).to.equal(inputString);
+
+
+        let zAB = rc4js.encrypt(outputABC,keyC);
+        let zA = rc4js.encrypt(zAB,keyB);
+        let zB = rc4js.encrypt(zAB,keyA);
+
+        let z1 = rc4js.encrypt(zA,keyA);
+        let z2 = rc4js.encrypt(zB,keyB);
+
+        expect(z1).to.equal(z2);
+        expect(z1).to.equal(inputString);
+    });
 });
