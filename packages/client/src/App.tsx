@@ -1,21 +1,24 @@
 import { useComponentValue } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
 import './app.css';
+import { world } from "./mud/world";
+import {ethers} from "ethers";
 export const App = () => {
   const {
     components: { Game },
-    systemCalls: { createGame, joinGame },
-    network: { singletonEntity },
+    systemCalls: { createGame, joinInGame },
+    network,
   } = useMUD();
-
-  const game = useComponentValue(Game, singletonEntity);
+  const byte32GameId = ethers.utils.formatBytes32String('100');
+  const gameEntity = world.registerEntity({ id: byte32GameId })
+  const game = useComponentValue(Game, gameEntity);
   console.log('game-----')
   console.log(game)
   return (
     <>
       <div>
           gameState: <span>{game?.state}</span>
-          singletonEntity: <span>{singletonEntity}</span>
+          singletonEntity: <span></span>
       </div>
         <div className={'form'}>
             <input placeholder={'Please enter gameID'}/>
@@ -28,8 +31,8 @@ export const App = () => {
         type="button"
         onClick={async (event) => {
           event.preventDefault();
-            // await createGame('100')
-            await joinGame('100')
+            await createGame('100')
+            // await joinInGame('100')
         }}>
           createGame
       </button>

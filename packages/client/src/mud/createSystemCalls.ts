@@ -3,7 +3,7 @@ import { awaitStreamValue } from "@latticexyz/utils";
 import { ClientComponents } from "./createClientComponents";
 import { SetupNetworkResult } from "./setupNetwork";
 import {ethers} from "ethers";
-
+import { world } from "./world";
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
 export function createSystemCalls(
@@ -12,20 +12,21 @@ export function createSystemCalls(
 ) {
   const createGame = async (gameId: string) => {
     // str to byte32
-    const byte32Str = ethers.utils.formatBytes32String(gameId);
-    const tx = await worldSend("createGame", [byte32Str]);
+    const byte32GameId = ethers.utils.formatBytes32String(gameId);
+    const gameEntity = world.registerEntity({ id: byte32GameId })
+    const tx = await worldSend("createGame", [byte32GameId]);
     await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
-    return getComponentValue(Game, singletonEntity);
+    return getComponentValue(Game, gameEntity);
   };
-  const joinGame = async (gameId: string) => {
-    // str to byte32
-    const byte32Str = ethers.utils.formatBytes32String(gameId);
-    const tx = await worldSend("joinInGame", [byte32Str]);
+  const joinInGame = async (gameId: string) => {
+    const byte32GameId = ethers.utils.formatBytes32String(gameId);
+    const gameEntity = world.registerEntity({ id: byte32GameId })
+    const tx = await worldSend("joinInGame", [byte32GameId]);
     await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
-    return getComponentValue(Game, singletonEntity);
+    return getComponentValue(Game, gameEntity);
   };
   return {
     createGame,
-    joinGame
+    joinInGame
   };
 }
