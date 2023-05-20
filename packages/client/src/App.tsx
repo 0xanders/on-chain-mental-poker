@@ -1,10 +1,10 @@
 import { useComponentValue } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
-
+import './app.css';
 export const App = () => {
   const {
     components: { Game },
-    systemCalls: { createGame },
+    systemCalls: { createGame, joinGame },
     network: { singletonEntity },
   } = useMUD();
 
@@ -16,11 +16,19 @@ export const App = () => {
       <div>
         Counter: <span>{game?.cardHash}</span>
       </div>
+        <div className={'form'}>
+            <input placeholder={'Please enter gameID'}/>
+            <div className={'button-warp'}>
+                <button>Create Game</button>
+                <button>Join Game</button>
+            </div>
+        </div>
       <button
         type="button"
         onClick={async (event) => {
           event.preventDefault();
-          console.log("new counter value:", await createGame('100'));
+            await createGame('100')
+            await joinGame('100')
         }}>
           createGame
       </button>

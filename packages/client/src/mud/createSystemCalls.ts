@@ -17,8 +17,15 @@ export function createSystemCalls(
     await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
     return getComponentValue(Game, singletonEntity);
   };
-
+  const joinGame = async (gameId: string) => {
+    // str to byte32
+    const byte32Str = ethers.utils.formatBytes32String(gameId);
+    const tx = await worldSend("joinInGame", [byte32Str]);
+    await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
+    return getComponentValue(Game, singletonEntity);
+  };
   return {
     createGame,
+    joinGame
   };
 }
