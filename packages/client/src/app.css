@@ -1,5 +1,6 @@
 .game-warp {
     list-style: none;
+    text-align: center;
 }
 .game-warp li {
     display: inline-block;
