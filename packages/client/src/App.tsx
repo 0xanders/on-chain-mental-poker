@@ -15,6 +15,7 @@ export const App = () => {
     <>
       <div>
           gameState: <span>{game?.state}</span>
+          singletonEntity: <span>{singletonEntity}</span>
       </div>
         <div className={'form'}>
             <input placeholder={'Please enter gameID'}/>
