@@ -11,7 +11,6 @@ export function createSystemCalls(
   { Game }: ClientComponents
 ) {
   const createGame = async (gameId: string) => {
-    // str to byte32
     const byte32GameId = ethers.utils.formatBytes32String(gameId);
     const gameEntity = world.registerEntity({ id: byte32GameId })
     const tx = await worldSend("createGame", [byte32GameId]);
