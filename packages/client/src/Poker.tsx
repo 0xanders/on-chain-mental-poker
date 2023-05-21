@@ -71,7 +71,7 @@ export const Poker = (props: Props) => {
                 {
                     leftPlayer.state === GameState.UploadSecret && <span className={`btn-tool ${props.game.turn === leftPlayer.turnIdx ? '' : 'disable'}`}>UploadSecret</span>
                 }
-                <span className={'poker-user'}>🧑‍🚒 {leftPlayer.wallet ? substrWalletText4(leftPlayer.wallet) : '?'}</span>
+                <span className={'poker-user'}>{leftPlayer.wallet ? substrWalletText4(leftPlayer.wallet) : '?'}</span>
             </div>
             <div className={'poker-item poker-right'}>
                 <span className={'poker-card'}>🂠</span>
@@ -87,7 +87,7 @@ export const Poker = (props: Props) => {
                 {
                     rightPlayer.state === GameState.UploadSecret && <span className={`btn-tool ${props.game.turn === rightPlayer.turnIdx ? '' : 'disable'}`}>UploadSecret</span>
                 }
-                <span className={'poker-user'}>👩‍🚀 {rightPlayer.wallet ? substrWalletText4(rightPlayer.wallet) : '?'}</span>
+                <span className={'poker-user'}>{rightPlayer.wallet ? substrWalletText4(rightPlayer.wallet) : '?'}</span>
             </div>
             <div className={'poker-item poker-self'}>
                 <span className={'poker-card'}>🂠</span>
@@ -106,7 +106,7 @@ export const Poker = (props: Props) => {
                 {
                     selfPlayer.state === GameState.UploadSecret && <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`}>UploadSecret</span>
                 }
-                <span className={'poker-user'}>👨‍🎨 YOU</span>
+                <span className={'poker-user'}>YOU</span>
             </div>
         </div>
     );

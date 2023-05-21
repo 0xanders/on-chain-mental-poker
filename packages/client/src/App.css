@@ -87,7 +87,7 @@
     font-size: 14px;
 }
 .poker-item .btn-tool {
-    margin: 10px;
+    margin: 10px 0;
 }
 .poker-item .btn-tool.disable {
     pointer-events: none;
