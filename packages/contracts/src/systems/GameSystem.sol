@@ -81,6 +81,7 @@ contract GameSystem is System {
     _checkTurn(gameData);
     require(gameData.cardIndex < gameData.cardsHash.length);
     HandCard.setCardHash(gameId, msg.sender, gameData.cardsHash[gameData.cardIndex]);
+    HandCard.setTempCardHash(gameId, msg.sender, gameData.cardsHash[gameData.cardIndex]);
     Game.setCardIndex(gameId, gameData.cardIndex + 1);
 
     if (gameData.turn + 1 == gameData.maxPlayers) {
@@ -101,7 +102,7 @@ contract GameSystem is System {
     require(others.length == tempCardsHash.length, "length not match");
     for (uint i = 0; i < others.length; i++) {
       require(others[i] != msg.sender, "Error");
-      HandCard.setTempCardHash(gameId, msg.sender, tempCardsHash[i]);
+      HandCard.setTempCardHash(gameId, others[i], tempCardsHash[i]);
     }
 
     if (gameData.turn + 1 == gameData.maxPlayers) {
