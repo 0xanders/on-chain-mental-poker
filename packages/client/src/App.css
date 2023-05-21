@@ -58,28 +58,15 @@
     width: 730px;
     height: 500px;
     margin: 20% auto;
+    background-color: #026C6F;
+    padding: 20px;
+    border-radius: 10px;
 }
 .poker-item {
     position: absolute;
-    display: block;
+    display: inline-block;
     width: 150px;
-    height: 192px;
     text-align: center;
-}
-.poker-item.poker-left {
-    top: 0;
-    left: 0;
-    transform: rotate(-90deg);
-}
-.poker-item.poker-right {
-    top: 0;
-    right: 0;
-    transform: rotate(90deg);
-}
-.poker-item.poker-self {
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50px);
 }
 .poker-item .poker-card {
     display: inline-block;
@@ -88,9 +75,9 @@
     line-height: 174px;
     font-size: 200px;
 }
-.poker-item .poker-user {
+.poker-item .poker-user, .poker-item .btn-tool {
     display: block;
-    width: 100px;
+    width: 146px;
     height: 40px;
     line-height: 40px;
     text-align: center;
@@ -98,7 +85,22 @@
     border-radius: 6px;
     color: #fff;
     font-size: 14px;
-    padding: 0 10px;
-    margin: 10px auto;
 }
-
+.poker-item .btn-tool {
+    margin: 10px;
+}
+.poker-item.poker-left {
+    top: 0;
+    left: 0;
+    transform: rotate(90deg);
+}
+.poker-item.poker-right {
+    top: 0;
+    right: 0;
+    transform: rotate(-90deg);
+}
+.poker-item.poker-self {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50px);
+}

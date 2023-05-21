@@ -6,16 +6,7 @@ import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { Poker } from "./Poker";
 import { useMount } from "ahooks";
-import { URLSearchParams } from "./util";
-enum GameState {
-    Join,
-    Shuffle,
-    DealCards,
-    DecryptForOthers,
-    UploadSecret,
-    Error,
-    Finished
-}
+import { GameState, URLSearchParams } from "./util";
 const getGameState = (state: number) => {
     switch (state) {
         case GameState.Join:

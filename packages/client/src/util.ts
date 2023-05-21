@@ -1,3 +1,13 @@
+export enum GameState {
+    Join, // 加入游戏
+    Shuffle, // 洗牌
+    DealCards, // 发牌
+    DecryptForOthers, // 解密
+    UploadSecret, // 上传私钥验证
+    Error,
+    Finished// 游戏结束
+}
+
 export function URLSearchParams (): Map<string, string> {
     const search = window.location.search
     const map:Map<string, string> = new Map()
