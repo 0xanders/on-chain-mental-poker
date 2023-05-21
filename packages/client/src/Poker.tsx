@@ -92,6 +92,9 @@ export const Poker = (props: Props) => {
             <div className={'poker-item poker-self'}>
                 <span className={'poker-card'}>🂠</span>
                 {
+                    selfPlayer.state === GameState.Join && <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`}>Shuffle</span>
+                }
+                {
                     selfPlayer.state === GameState.Shuffle && <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`}>Shuffle</span>
                 }
                 {
