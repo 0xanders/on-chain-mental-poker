@@ -57,7 +57,7 @@
     position: relative;
     width: 600px;
     height: 500px;
-    margin: 20px auto;
+    margin: 20% auto;
 }
 .poker-item {
     position: absolute;
@@ -69,10 +69,12 @@
 .poker-item.poker-left {
     top: 0;
     left: 0;
+    transform: rotate(-90deg);
 }
 .poker-item.poker-right {
     top: 0;
     right: 0;
+    transform: rotate(90deg);
 }
 .poker-item.poker-self {
     bottom: 0;
@@ -85,4 +87,16 @@
     height: 192px;
     line-height: 174px;
     font-size: 200px;
+}
+.poker-item  .poker-user {
+    display: block;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    background-color: green;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 12px;
+    margin: 10px;
 }

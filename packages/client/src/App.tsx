@@ -1,5 +1,4 @@
 import { useComponentValue } from "@latticexyz/react";
-import { getBurnerWallet } from "@latticexyz/std-client";
 import { useMUD } from "./MUDContext";
 import './App.css';
 import { world } from "./mud/world";
@@ -37,9 +36,8 @@ const getGameState = (state: number) => {
     }
 }
 export const App = () => {
-    const {components: { Game }, systemCalls: { createGame, joinInGame }} = useMUD();
+    const {walletAddress, components: { Game }, systemCalls: { createGame, joinInGame }} = useMUD();
     const [gameId, setGameId] = useState('')
-    const [walletAddress, setWalletAddress] = useState('')
     const [isJoinedGame, setIsJoinedGame] = useState(false)
     const byte32GameId = ethers.utils.formatBytes32String(gameId);
     const gameEntity = world.registerEntity({ id: byte32GameId })
@@ -71,9 +69,6 @@ export const App = () => {
         } else {
             setIsJoinedGame(false)
         }
-        let privateKey = getBurnerWallet().value
-        let wallet = new ethers.Wallet(privateKey);
-        setWalletAddress(wallet.address.toLowerCase())
     })
     return (
     <>

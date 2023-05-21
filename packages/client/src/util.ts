@@ -31,3 +31,7 @@ export function uuidGen(length = 32) {
     }
     return uuid.join('')
 }
+export function substrWalletText4(account: string){
+    const address = account ? account.toLowerCase().replace(/([\w]{6})[\w\W]+([\w]{4})$/, '$1…$2') : ''
+    return address
+}
