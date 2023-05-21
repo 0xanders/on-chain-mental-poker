@@ -103,7 +103,7 @@ export const Poker = (props: Props) => {
                 {
                     selfPlayer.state === GameState.UploadSecret && <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`}>UploadSecret</span>
                 }
-                <span className={'poker-user'}>👨‍🎨 {selfPlayer.wallet ? substrWalletText4(selfPlayer.wallet) : '?'}</span>
+                <span className={'poker-user'}>👨‍🎨 YOU</span>
             </div>
         </div>
     );
