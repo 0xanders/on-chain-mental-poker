@@ -66,19 +66,22 @@ contract GameTest is MudV2Test {
     bytes32 secretKey_Bob = "0xBob";
     bytes32 secretKey_Carl = "0xCarl";
     bytes32[52] memory cardsHash;
-    bytes32[52] memory cards = world.getCards();
+    
 
     vm.startPrank(Alice);
-    for (uint i = 0; i < cards.length; i++) {
-      cardsHash[i] = world.rc4EncryptBytes32(cards[i], secretKey_Alice);
+    cardsHash = Game.getCardsHash(world, gameId); // get Current cardsHash from world
+    for (uint i = 0; i < cardsHash.length; i++) {
+      // shuffle is not done here, the client should to the shuffle works 
+      cardsHash[i] = world.rc4EncryptBytes32(cardsHash[i], secretKey_Alice); // encrypt cardsHash with secretKey
     }
     resultOfSign = world.rc4EncryptBytes32(msgToSign, secretKey_Alice);
     world.shuffleAndSave(gameId, msgToSign, resultOfSign, cardsHash);
     vm.stopPrank();
 
     vm.startPrank(Bob);
+    cardsHash = Game.getCardsHash(world, gameId); // get Current cardsHash from world
     for (uint i = 0; i < cardsHash.length; i++) {
-      cardsHash[i] = world.rc4EncryptBytes32(cardsHash[i], secretKey_Bob);
+      cardsHash[i] = world.rc4EncryptBytes32(cardsHash[i], secretKey_Bob); // encrypt cardsHash with secretKey
     }
 
     resultOfSign = world.rc4EncryptBytes32(msgToSign, secretKey_Bob);
@@ -86,8 +89,9 @@ contract GameTest is MudV2Test {
     vm.stopPrank();
 
     vm.startPrank(Carl);
+    cardsHash = Game.getCardsHash(world, gameId); // get Current cardsHash from world
     for (uint i = 0; i < cardsHash.length; i++) {
-      cardsHash[i] = world.rc4EncryptBytes32(cardsHash[i], secretKey_Carl);
+      cardsHash[i] = world.rc4EncryptBytes32(cardsHash[i], secretKey_Carl); // encrypt cardsHash with secretKey
     }
     resultOfSign = world.rc4EncryptBytes32(msgToSign, secretKey_Carl);
     world.shuffleAndSave(gameId, msgToSign, resultOfSign, cardsHash);
