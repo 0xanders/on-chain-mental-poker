@@ -89,6 +89,10 @@
 .poker-item .btn-tool {
     margin: 10px;
 }
+.poker-item .btn-tool.disable {
+    pointer-events: none;
+    background-color: gray;
+}
 .poker-item.poker-left {
     top: -20px;
     left: 60px;
