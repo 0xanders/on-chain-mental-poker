@@ -8,7 +8,6 @@ type Props = {
 };
 
 export const Poker = (props: Props) => {
-    props.game.players.includes()
     return (
         <>
             666: {props.game?.state}
