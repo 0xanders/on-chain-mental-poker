@@ -70,6 +70,9 @@ importers:
       ethers:
         specifier: ^5.7.2
         version: 5.7.2
+      rc4-cipher:
+        specifier: ^1.0.0
+        version: registry.npmmirror.com/rc4-cipher@1.0.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -4637,12 +4640,12 @@ packages:
     version: 1.0.0
 
   github.com/dk1a/memmove/ffd71cd77b1708574ef46a667b23ca3a5cc9fa27:
-    resolution: {commit: ffd71cd77b1708574ef46a667b23ca3a5cc9fa27, repo: git+ssh://git@github.com/dk1a/memmove.git, type: git}
+    resolution: {tarball: https://codeload.github.com/dk1a/memmove/tar.gz/ffd71cd77b1708574ef46a667b23ca3a5cc9fa27}
     name: memmove
     version: 0.1.0
 
   github.com/foundry-rs/forge-std/b4f121555729b3afb3c5ffccb62ff4b6e2818fd3:
-    resolution: {commit: b4f121555729b3afb3c5ffccb62ff4b6e2818fd3, repo: git+ssh://git@github.com/foundry-rs/forge-std.git, type: git}
+    resolution: {tarball: https://codeload.github.com/foundry-rs/forge-std/tar.gz/b4f121555729b3afb3c5ffccb62ff4b6e2818fd3}
     name: forge-std
     version: 1.2.0
     dev: true
@@ -5662,6 +5665,12 @@ packages:
     name: queue-microtask
     version: 1.2.3
     dev: true
+
+  registry.npmmirror.com/rc4-cipher@1.0.0:
+    resolution: {integrity: sha512-qv+SkUxFRfwSEt3zRG2BV1zVWB+un0DcumDVXHjI5lQnkBfeye6EVyR6IZBm9vhsQUHvEeEtb1lk1g4eMH8xlA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/rc4-cipher/-/rc4-cipher-1.0.0.tgz}
+    name: rc4-cipher
+    version: 1.0.0
+    dev: false
 
   registry.npmmirror.com/regexpp@3.2.0:
     resolution: {integrity: sha512-pq2bWo9mVD43nbts2wGv17XLiNLya+GklZ8kaDLV2Z08gDCsGpnKn9BFMepvWuHCbyVvY7J5o5+BVvoQbmlJLg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/regexpp/-/regexpp-3.2.0.tgz}

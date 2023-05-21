@@ -1,17 +1,19 @@
 import { useMUD } from "./MUDContext";
 import { useMount } from "ahooks";
 import { useEffect, useState } from "react";
-import { GameState, substrWalletText4 } from "./util"
+import { GameState, CARDS, getKey, encryptArray, randowArray, substrWalletText4 } from "./util"
+const rc4 = require('rc4-cipher');
 type Props = {
     game: {
         state: number
         turn: number
         cardIndex: number
         players: Array<string>
+        cardArr: Array<string>
     }
 };
 export const Poker = (props: Props) => {
-    const {walletAddress} = useMUD();
+    const {walletAddress, systemCalls: { shuffleAndSave }} = useMUD();
     const [selfPlayer, setSelfPlayer] = useState({
         turnIdx: 0,
         wallet: '',
@@ -27,6 +29,17 @@ export const Poker = (props: Props) => {
         wallet: '',
         state: GameState.Join
     })
+    const clickTool = (type: string) => {
+        if (type === 'Shuffle') {
+            let cardArr = [...CARDS]
+            if (props.game.turn !== 0) {
+                cardArr = [...props.game.cardArr]
+            }
+            cardArr = encryptArray(cardArr, getKey())
+            cardArr = randowArray(cardArr)
+            shuffleAndSave('gameId', 'msgToSign', 'resultOfSign', cardArr)
+        }
+    }
     useEffect(() => {
         setSelfPlayer({
             turnIdx: 0,
@@ -60,51 +73,33 @@ export const Poker = (props: Props) => {
             <div className={'poker-item poker-left'}>
                 <span className={'poker-card'}>🂠</span>
                 {
-                    leftPlayer.state === GameState.Shuffle && <span className={`btn-tool ${props.game.turn === leftPlayer.turnIdx ? '' : 'disable'}`}>Shuffle</span>
-                }
-                {
-                    leftPlayer.state === GameState.DealCards && <span className={`btn-tool ${props.game.turn === leftPlayer.turnIdx ? '' : 'disable'}`}>DealCards</span>
-                }
-                {
-                    leftPlayer.state === GameState.DecryptForOthers && <span className={`btn-tool ${props.game.turn === leftPlayer.turnIdx ? '' : 'disable'}`}>Decrypt</span>
-                }
-                {
-                    leftPlayer.state === GameState.UploadSecret && <span className={`btn-tool ${props.game.turn === leftPlayer.turnIdx ? '' : 'disable'}`}>UploadSecret</span>
+                    leftPlayer.state === GameState.Shuffle &&
+                    <span className={`btn-tool ${props.game.turn === leftPlayer.turnIdx ? '' : 'disable'}`}
+                       onClick={() => {
+                           clickTool('Shuffle')
+                       }}>Shuffle</span>
                 }
                 <span className={'poker-user'}>{leftPlayer.wallet ? substrWalletText4(leftPlayer.wallet) : '?'}</span>
             </div>
             <div className={'poker-item poker-right'}>
                 <span className={'poker-card'}>🂠</span>
                 {
-                    rightPlayer.state === GameState.Shuffle && <span className={`btn-tool ${props.game.turn === rightPlayer.turnIdx ? '' : 'disable'}`}>Shuffle</span>
-                }
-                {
-                    rightPlayer.state === GameState.DealCards && <span className={`btn-tool ${props.game.turn === rightPlayer.turnIdx ? '' : 'disable'}`}>DealCards</span>
-                }
-                {
-                    rightPlayer.state === GameState.DecryptForOthers && <span className={`btn-tool ${props.game.turn === rightPlayer.turnIdx ? '' : 'disable'}`}>Decrypt</span>
-                }
-                {
-                    rightPlayer.state === GameState.UploadSecret && <span className={`btn-tool ${props.game.turn === rightPlayer.turnIdx ? '' : 'disable'}`}>UploadSecret</span>
+                    rightPlayer.state === GameState.Shuffle &&
+                    <span className={`btn-tool ${props.game.turn === rightPlayer.turnIdx ? '' : 'disable'}`}
+                          onClick={() => {
+                              clickTool('Shuffle')
+                          }}>Shuffle</span>
                 }
                 <span className={'poker-user'}>{rightPlayer.wallet ? substrWalletText4(rightPlayer.wallet) : '?'}</span>
             </div>
             <div className={'poker-item poker-self'}>
                 <span className={'poker-card'}>🂠</span>
                 {
-                    selfPlayer.state === GameState.Join && <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`}>Shuffle</span>
-                }
-                {
-                    selfPlayer.state === GameState.Shuffle && <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`}>Shuffle</span>
-                }
-                {
-                    selfPlayer.state === GameState.DealCards && <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`}>DealCards</span>
-                }
-                {
-                    selfPlayer.state === GameState.DecryptForOthers && <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`}>Decrypt</span>
-                }
-                {
-                    selfPlayer.state === GameState.UploadSecret && <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`}>UploadSecret</span>
+                    selfPlayer.state === GameState.Shuffle &&
+                    <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`}
+                          onClick={() => {
+                              clickTool('Shuffle')
+                          }}>Shuffle</span>
                 }
                 <span className={'poker-user'}>YOU</span>
             </div>

@@ -24,8 +24,17 @@ export function createSystemCalls(
     await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
     return getComponentValue(Game, gameEntity);
   };
+  const shuffleAndSave = async (gameId: string, msgToSign: string, resultOfSign: string, cardsHash: Array<string>) => {
+    const byte32GameId = ethers.utils.formatBytes32String(gameId);
+    const gameEntity = world.registerEntity({ id: byte32GameId })
+    const tx = await worldSend("shuffleAndSave", [byte32GameId, ethers.utils.formatBytes32String(msgToSign), ethers.utils.formatBytes32String(resultOfSign), cardsHash]);
+    await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
+    return getComponentValue(Game, gameEntity);
+  };
+
   return {
     createGame,
-    joinInGame
+    joinInGame,
+    shuffleAndSave
   };
 }
