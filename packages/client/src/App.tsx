@@ -3,10 +3,11 @@ import { getBurnerWallet } from "@latticexyz/std-client";
 import { useMUD } from "./MUDContext";
 import './App.css';
 import { world } from "./mud/world";
-import {ethers} from "ethers";
-import {useEffect, useState} from "react";
+import { ethers } from "ethers";
+import { useEffect, useState } from "react";
 import { Poker } from "./Poker";
-import {useMount} from "ahooks";
+import { useMount } from "ahooks";
+import { URLSearchParams } from "./util";
 enum GameState {
     Join,
     Shuffle,
@@ -39,27 +40,28 @@ export const App = () => {
     const {components: { Game }, systemCalls: { createGame, joinInGame }} = useMUD();
     const [gameId, setGameId] = useState('')
     const [walletAddress, setWalletAddress] = useState('')
-    const [isGameing, setIsGameing] = useState(false)
+    const [isJoinedGame, setIsJoinedGame] = useState(false)
     const byte32GameId = ethers.utils.formatBytes32String(gameId);
     const gameEntity = world.registerEntity({ id: byte32GameId })
     const game = useComponentValue(Game, gameEntity);
     console.log('game-----')
     console.log(game)
     const createOrJoinGame = async () => {
-      if (game && !game?.players.includes(walletAddress)) {
-          await joinInGame(gameId)
-      } else if (!game){
-          await createGame(gameId)
-      }
-      window.location.href = `${window.location.href}&gameId=${gameId}`
+        if (game && !game?.players.includes(walletAddress)) {
+            await joinInGame(gameId)
+        } else if (!game){
+            await createGame(gameId)
+        }
+        setIsJoinedGame(true)
+        window.location.href = `${window.location.href}&gameId=${gameId}`
     }
     useMount(() => {
-        const params = new URLSearchParams(window.location.search);
-        if (params?.gameId) {
-            setGameId(params?.gameId)
-            setIsGameing(true)
+        const params = URLSearchParams();
+        if (params.get('gameId')) {
+            setGameId(params.get('gameId') || '')
+            setIsJoinedGame(true)
         } else {
-            setIsGameing(false)
+            setIsJoinedGame(false)
         }
         let privateKey = getBurnerWallet().value
         let wallet = new ethers.Wallet(privateKey);
@@ -68,7 +70,7 @@ export const App = () => {
     return (
     <>
         {
-            isGameing ? <Poker game={game}/> : <>
+            isJoinedGame ? <Poker game={game}/> : <>
                 <ul className={'game-warp'}>
                     <li>state: <span>{game?.state}({getGameState(game?.state)})</span></li>
                     <li>turn: <span>{game?.turn}</span></li>
