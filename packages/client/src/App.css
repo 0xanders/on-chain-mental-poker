@@ -57,8 +57,8 @@
     position: relative;
     width: 730px;
     height: 500px;
-    margin: 20% auto;
-    background-color: #026C6F;
+    margin: 50px auto;
+    background-color: rgba(200, 108, 111, 1);
     padding: 20px;
     border-radius: 10px;
 }
@@ -90,17 +90,17 @@
     margin: 10px;
 }
 .poker-item.poker-left {
-    top: 0;
-    left: 0;
+    top: -20px;
+    left: 60px;
     transform: rotate(90deg);
 }
 .poker-item.poker-right {
-    top: 0;
-    right: 0;
+    top: -20px;
+    right: 60px;
     transform: rotate(-90deg);
 }
 .poker-item.poker-self {
-    bottom: 0;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50px);
 }
