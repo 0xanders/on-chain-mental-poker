@@ -55,6 +55,14 @@ export const App = () => {
         setIsJoinedGame(true)
         window.location.href = `${window.location.href}&gameId=${gameId}`
     }
+    useEffect(() => {
+        if (game) {
+            const joined = game?.players.includes(walletAddress)
+            setIsJoinedGame(joined)
+        } else {
+            setIsJoinedGame(false)
+        }
+    }, [game, walletAddress])
     useMount(() => {
         const params = URLSearchParams();
         const gameId = params.get('gameId') || ''
@@ -80,7 +88,7 @@ export const App = () => {
                     <li>players: <span>{game?.players}</span></li>
                 </ul>
                 <div className={'form'}>
-                    <input placeholder={'Please enter gameID'} onChange={(e: any) => {
+                    <input value={gameId} placeholder={'Please enter gameID'} onChange={(e: any) => {
                         setGameId(e.target.value || '')
                     }}/>
                     <button onClick={createOrJoinGame}>{game ? 'Join Game' : 'Create Game'}</button>
