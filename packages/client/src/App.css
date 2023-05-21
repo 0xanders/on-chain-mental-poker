@@ -74,7 +74,7 @@
     top: 0;
     right: 0;
 }
-.poker-item.poker-selft {
+.poker-item.poker-self {
     bottom: 0;
     left: 50%;
     transform: translateX(-50px);
