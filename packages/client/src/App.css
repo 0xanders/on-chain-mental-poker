@@ -55,7 +55,7 @@
 }
 .poker-warp {
     position: relative;
-    width: 600px;
+    width: 730px;
     height: 500px;
     margin: 20% auto;
 }
@@ -88,7 +88,7 @@
     line-height: 174px;
     font-size: 200px;
 }
-.poker-item  .poker-user {
+.poker-item .poker-user {
     display: block;
     width: 100px;
     height: 40px;
@@ -101,3 +101,4 @@
     padding: 0 10px;
     margin: 10px auto;
 }
+

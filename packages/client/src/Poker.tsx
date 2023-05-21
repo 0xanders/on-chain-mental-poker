@@ -46,12 +46,12 @@ export const Poker = (props: Props) => {
     return (
         <div className={'poker-warp'}>
             <div className={'poker-item poker-left'}>
-                <span className={'poker-card'}>🂠</span>
                 <span className={'poker-user'}>{leftPlayer.wallet ? substrWalletText4(leftPlayer.wallet) : '?'}</span>
+                <span className={'poker-card'}>🂠</span>
             </div>
             <div className={'poker-item poker-right'}>
-                <span className={'poker-card'}>🂠</span>
                 <span className={'poker-user'}>{rightPlayer.wallet ? substrWalletText4(rightPlayer.wallet) : '?'}</span>
+                <span className={'poker-card'}>🂠</span>
             </div>
             <div className={'poker-item poker-self'}>
                 <span className={'poker-card'}>🂠</span>
