@@ -53,3 +53,36 @@
     cursor: pointer;
     vertical-align: middle;
 }
+.poker-warp {
+    position: relative;
+    width: 600px;
+    height: 500px;
+    margin: 20px auto;
+}
+.poker-item {
+    position: absolute;
+    display: block;
+    width: 130px;
+    height: 192px;
+    background-color: red;
+}
+.poker-item.poker-left {
+    top: 0;
+    left: 0;
+}
+.poker-item.poker-right {
+    top: 0;
+    right: 0;
+}
+.poker-item.poker-selft {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50px);
+}
+.poker-item .poker-card {
+    display: inline-block;
+    width: 130px;
+    height: 192px;
+    line-height: 174px;
+    font-size: 200px;
+}
