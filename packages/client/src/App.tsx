@@ -57,9 +57,9 @@ export const App = () => {
     }
     useMount(() => {
         const params = URLSearchParams();
-        if (params.get('gameId')) {
-            setGameId(params.get('gameId') || '')
-            setIsJoinedGame(true)
+        const gameId = params.get('gameId') || ''
+        if (gameId) {
+            setGameId(gameId)
         } else {
             setIsJoinedGame(false)
         }
