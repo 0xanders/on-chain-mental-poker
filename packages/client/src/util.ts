@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-const rc4Cipher = require('rc4-cipher');
+import rc4Cipher from 'rc4-cipher'
 export enum GameState {
     Join, // 加入游戏
     Shuffle, // 洗牌

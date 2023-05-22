@@ -1,8 +1,7 @@
 import { useMUD } from "./MUDContext";
 import { useMount } from "ahooks";
 import { useEffect, useState } from "react";
-import { GameState, CARDS, getKey, encryptArray, randowArray, substrWalletText4 } from "./util"
-const rc4 = require('rc4-cipher');
+import { GameState, substrWalletText4 } from "./util"
 type Props = {
     game: {
         state: number
@@ -16,35 +15,31 @@ export const Poker = (props: Props) => {
     const {walletAddress, systemCalls: { shuffleAndSave }} = useMUD();
     const [selfPlayer, setSelfPlayer] = useState({
         turnIdx: 0,
-        wallet: '',
-        state: GameState.Join
+        wallet: ''
     })
     const [leftPlayer, setLeftPlayer] = useState({
         turnIdx: 1,
-        wallet: '',
-        state: GameState.Join
+        wallet: ''
     })
     const [rightPlayer, setRightPlayer] = useState({
         turnIdx: 2,
-        wallet: '',
-        state: GameState.Join
+        wallet: ''
     })
     const clickTool = (type: string) => {
         if (type === 'Shuffle') {
-            let cardArr = [...CARDS]
-            if (props.game.turn !== 0) {
-                cardArr = [...props.game.cardArr]
-            }
-            cardArr = encryptArray(cardArr, getKey())
-            cardArr = randowArray(cardArr)
-            shuffleAndSave('gameId', 'msgToSign', 'resultOfSign', cardArr)
+            // let cardArr = [...CARDS]
+            // if (props.game.turn !== 0) {
+            //     cardArr = [...props.game.cardArr]
+            // }
+            // cardArr = encryptArray(cardArr, getKey())
+            // cardArr = randowArray(cardArr)
+            // shuffleAndSave('gameId', 'msgToSign', 'resultOfSign', cardArr)
         }
     }
     useEffect(() => {
         setSelfPlayer({
             turnIdx: 0,
-            wallet: walletAddress,
-            state: GameState.Join
+            wallet: walletAddress
         })
         if (props.game.players) {
             const players = [...props.game.players]
@@ -53,16 +48,14 @@ export const Poker = (props: Props) => {
             if (players.length >= 1) {
                 setLeftPlayer({
                     turnIdx: 1,
-                    wallet: players[0],
-                    state: GameState.Join
+                    wallet: players[0]
                 })
                 players.splice(0, 1)
             }
             if (players.length >= 1) {
                 setRightPlayer({
                     turnIdx: 2,
-                    wallet: players[0],
-                    state: GameState.Join
+                    wallet: players[0]
                 })
                 players.splice(0, 1)
             }
@@ -73,7 +66,7 @@ export const Poker = (props: Props) => {
             <div className={'poker-item poker-left'}>
                 <span className={'poker-card'}>🂠</span>
                 {
-                    leftPlayer.state === GameState.Shuffle &&
+                    props.game.state === GameState.Shuffle &&
                     <span className={`btn-tool ${props.game.turn === leftPlayer.turnIdx ? '' : 'disable'}`}
                        onClick={() => {
                            clickTool('Shuffle')
@@ -84,7 +77,7 @@ export const Poker = (props: Props) => {
             <div className={'poker-item poker-right'}>
                 <span className={'poker-card'}>🂠</span>
                 {
-                    rightPlayer.state === GameState.Shuffle &&
+                    props.game.state === GameState.Shuffle &&
                     <span className={`btn-tool ${props.game.turn === rightPlayer.turnIdx ? '' : 'disable'}`}
                           onClick={() => {
                               clickTool('Shuffle')
@@ -95,7 +88,7 @@ export const Poker = (props: Props) => {
             <div className={'poker-item poker-self'}>
                 <span className={'poker-card'}>🂠</span>
                 {
-                    selfPlayer.state === GameState.Shuffle &&
+                    props.game.state === GameState.Shuffle &&
                     <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`}
                           onClick={() => {
                               clickTool('Shuffle')
