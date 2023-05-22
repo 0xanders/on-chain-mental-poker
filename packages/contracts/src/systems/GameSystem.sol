@@ -47,6 +47,10 @@ contract GameSystem is System {
     Game.setCardsHash(gameId, CARDS);
   }
 
+  function getIdByGameIdAndPlayerAddress(bytes32 gameId, address player) public pure returns (bytes32) {
+    return keccak256(abi.encodePacked(gameId, player));
+  }
+
   function joinInGame(bytes32 gameId) public onlyState(gameId, GameState.Join) {
     GameData memory gameData = Game.get(gameId);
     _checkIsIn(gameId);
@@ -65,7 +69,8 @@ contract GameSystem is System {
     GameData memory gameData = Game.get(gameId);
     _checkTurn(gameData);
     Game.setCardsHash(gameId, cardsHash);
-    Commitment.set(gameId, msg.sender, msgToSign, resultOfSign, bytes32(0));
+    bytes32 commitmentId = getIdByGameIdAndPlayerAddress(gameId, msg.sender);
+    Commitment.set(commitmentId, msgToSign, resultOfSign, bytes32(0));
 
     if (gameData.turn + 1 == gameData.maxPlayers) {
       Game.setTurn(gameId, 0);
@@ -79,8 +84,9 @@ contract GameSystem is System {
     GameData memory gameData = Game.get(gameId);
     _checkTurn(gameData);
     require(gameData.cardIndex < gameData.cardsHash.length);
-    HandCard.setCardHash(gameId, msg.sender, gameData.cardsHash[gameData.cardIndex]);
-    HandCard.setTempCardHash(gameId, msg.sender, gameData.cardsHash[gameData.cardIndex]);
+    bytes32 handCardId = getIdByGameIdAndPlayerAddress(gameId, msg.sender);
+    HandCard.setCardHash(handCardId, gameData.cardsHash[gameData.cardIndex]);
+    HandCard.setTempCardHash(handCardId, gameData.cardsHash[gameData.cardIndex]);
     Game.setCardIndex(gameId, gameData.cardIndex + 1);
 
     if (gameData.turn + 1 == gameData.maxPlayers) {
@@ -101,7 +107,9 @@ contract GameSystem is System {
     require(others.length == tempCardsHash.length, "length not match");
     for (uint i = 0; i < others.length; i++) {
       require(others[i] != msg.sender, "Error");
-      HandCard.setTempCardHash(gameId, others[i], tempCardsHash[i]);
+      bytes32 handCardId = getIdByGameIdAndPlayerAddress(gameId, others[i]);
+
+      HandCard.setTempCardHash(handCardId, tempCardsHash[i]);
     }
 
     if (gameData.turn + 1 == gameData.maxPlayers) {
@@ -116,12 +124,15 @@ contract GameSystem is System {
     GameData memory gameData = Game.get(gameId);
     _checkTurn(gameData);
 
-    bytes32 sign = Commitment.getMsgToSign(gameId, msg.sender);
-    bytes32 resultOfSign1 = Commitment.getResultOfSign(gameId, msg.sender);
+    bytes32 commitmentId = getIdByGameIdAndPlayerAddress(gameId, msg.sender);
+
+    bytes32 sign = Commitment.getMsgToSign(commitmentId);
+    bytes32 resultOfSign1 = Commitment.getResultOfSign(commitmentId);
     bytes32 resultOfSign2 = rc4EncryptBytes32(sign, secretKey);    
     require(resultOfSign1 == resultOfSign2, "invalid secretKey");
 
-    Commitment.setKey(gameId, msg.sender, secretKey);
+
+    Commitment.setKey(commitmentId, secretKey);
 
     if (gameData.turn + 1 == gameData.maxPlayers) {
       Game.setTurn(gameId, 0);
@@ -136,14 +147,17 @@ contract GameSystem is System {
 
     bytes32[] memory keys = new bytes32[](players.length);
     for (uint i = 0; i < players.length; i++) {
-      bytes32 key = Commitment.getKey(gameId, players[i]);
+      bytes32 commitmentId = getIdByGameIdAndPlayerAddress(gameId, players[i]);
+
+      bytes32 key = Commitment.getKey(commitmentId);
       keys[i] = key;
     }
 
     uint winnnerIndex = 0;
     uint winnerCard = 0;
     for (uint i = 0; i < players.length; i++) {
-      bytes32 cardHash = HandCard.getCardHash(gameId, players[i]);
+      bytes32 handCardId = getIdByGameIdAndPlayerAddress(gameId, players[i]);
+      bytes32 cardHash = HandCard.getCardHash(handCardId);
       bytes32 card = cardHash;
       for(uint j = 0; j < keys.length; j++) {        
         card = rc4EncryptBytes32(card, keys[j]);
@@ -153,7 +167,7 @@ contract GameSystem is System {
         return;
       }
 
-      HandCard.setCard(gameId, players[i], card);
+      HandCard.setCard(handCardId, card);
       if(uint256(card) > winnerCard) {
         winnerCard = uint256(card);
         winnnerIndex = i;

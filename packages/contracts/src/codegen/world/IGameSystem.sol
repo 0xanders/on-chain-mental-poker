@@ -8,6 +8,8 @@ interface IGameSystem {
 
   function createGame(bytes32 gameId) external;
 
+  function getIdByGameIdAndPlayerAddress(bytes32 gameId, address player) external pure returns (bytes32);
+
   function joinInGame(bytes32 gameId) external;
 
   function shuffleAndSave(

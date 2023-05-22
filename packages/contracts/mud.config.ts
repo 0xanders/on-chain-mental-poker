@@ -23,8 +23,7 @@ export default mudConfig({
     },
     Commitment: {
       keySchema: {
-        gameId: "bytes32",
-        player: "address"
+        id: "bytes32",
       },
       schema: {
         msgToSign: "bytes32",
@@ -35,8 +34,7 @@ export default mudConfig({
 
     HandCard: {
       keySchema: {
-        gameId: "bytes32",
-        player: "address"
+        id: "bytes32",
       },
       schema: {
         tempCardHash: "bytes32",
