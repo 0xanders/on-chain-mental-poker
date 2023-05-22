@@ -4,6 +4,7 @@ const Web3 = require("web3");
 const web3 = new Web3();
 const rc4js = require('rc4-cipher');
 const RC4 = artifacts.require("RC4");
+const ethers = require('ethers');
 
 contract("test RC4", async accounts => {
 
@@ -137,5 +138,30 @@ contract("test RC4", async accounts => {
 
         expect(z1).to.equal(z2);
         expect(z1).to.equal(inputString);
+    });
+
+
+    it("ethers", async function () {
+            
+        // data example from contract
+    let input = '0xPoker';    
+    let inputByte32=  ethers.utils.formatBytes32String(input);
+   
+    let inputString =  ethers.utils.toUtf8String(inputByte32);
+    
+
+    let key = "key";
+
+
+    let output1 =  rc4js.encrypt(inputString,key);
+
+    let output1Byte32 =  ethers.utils.hexlify(ethers.utils.toUtf8Bytes(output1));
+
+    let output2 =  rc4js.encrypt(output1,key);
+
+    let output2Bytes32 = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(output2));
+
+    console.log({input, inputByte32, inputString, output1,output1Byte32, output2, output2Bytes32})
+
     });
 });
