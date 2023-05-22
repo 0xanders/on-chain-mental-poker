@@ -97,23 +97,31 @@ export function utf8Key(key: string): string {
     const keyStr = ethers.utils.toUtf8String(keyBytes32);
     return keyStr
 }
+
+export function encryptSingle(input: string, key: string): string {
+    let keyHex = asciiToHex(key);
+    let keyByte32 = ethers.utils.defaultAbiCoder.encode(["bytes32"], [keyHex]);
+    let keyString = hexToAscii(keyByte32);
+
+    const inputHex = asciiToHex(input);
+    const inputBytes32 = ethers.utils.defaultAbiCoder.encode(["bytes32"], [inputHex]);
+    const inputString = hexToAscii(inputBytes32);
+
+    const outputString = encrypt(inputString, keyString);
+    const outputBytes32 = asciiToHex(outputString);
+
+    return outputBytes32
+
+}
+
 export function encryptArray(arr: Array<any>, key: string): Array<string> {
-    return arr.map((str) => {
-        debugger
-        // const inputString = ethers.utils.toUtf8String(str);
-
-        // const keyBytes32 = ethers.utils.formatBytes32String(key);
-        // const keyStr = ethers.utils.toUtf8String(keyBytes32);
-
-        // const output1 =  encrypt(inputString, keyStr);
-        // const output2 = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(output1))
-        // return output2
-        const inputStr = ethers.utils.parseBytes32String('0x1000000000000000000000000000000000000000000000000000000000000000');
-        debugger
-
-        return inputStr
+    return arr.map((str) => {                
+        return encryptSingle(str, key)
     })
 }
+
+
+
 export function substrWalletText4(account: string){
     const address = account ? account.toLowerCase().replace(/([\w]{4})[\w\W]+([\w]{4})$/, '$1…$2') : ''
     return address

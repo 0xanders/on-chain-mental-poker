@@ -2,7 +2,7 @@ import { useMUD } from "./MUDContext";
 import { useComponentValue } from "@latticexyz/react";
 import { useMount } from "ahooks";
 import { useEffect, useState } from "react";
-import { GameState, getSecretKey, encryptArray, randowArray, utf8Key, substrWalletText4 } from "./util";
+import { GameState, getSecretKey, encryptArray, randowArray, utf8Key,encryptSingle, substrWalletText4 } from "./util";
 import { encrypt } from "./rc4";
 import { ethers } from "ethers";
 import { world } from "./mud/world";
@@ -55,8 +55,8 @@ export const Poker = (props: Props) => {
             // let resultOfSign = encrypt(msgToSign2, keyStr);
             // resultOfSign = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(resultOfSign))
 
-            const msgToSign = ethers.utils.formatBytes32String("0xPoker");
-            let resultOfSign = encrypt(msgToSign, secretKey);
+            const msgToSign = "0xPoker";
+            const resultOfSign = encryptSingle(msgToSign, secretKey);
             shuffleAndSave(props.gameId, msgToSign, resultOfSign, cardArr)
         } else if (props.game.state === GameState.DealCards) {
             dealCards(props.gameId)
