@@ -82,7 +82,7 @@ export function URLSearchParams (): Map<string, string> {
 export function getSecretKey() {
     const uuid = sessionStorage.getItem('SecretKey:UUID') || Math.floor(new Date().getTime() * Math.random()).toString()
     sessionStorage.setItem('SecretKey:UUID', uuid)
-    return uuid
+    return 'uuid'
 }
 export function randowArray(arr: Array<any>){
     let i = arr.length;
@@ -99,12 +99,13 @@ export function utf8Key(key: string): string {
 }
 
 export function encryptSingle(input: string, key: string): string {
-    let keyHex = asciiToHex(key);
-    let keyByte32 = ethers.utils.defaultAbiCoder.encode(["bytes32"], [keyHex]);
-    let keyString = hexToAscii(keyByte32);
+    const keyHex = asciiToHex(key);
+    const keyByte32 = ethers.utils.hexZeroPad(keyHex, 32)
+
+    const keyString = hexToAscii(keyByte32);
 
     const inputHex = asciiToHex(input);
-    const inputBytes32 = ethers.utils.defaultAbiCoder.encode(["bytes32"], [inputHex]);
+    const inputBytes32 = ethers.utils.hexZeroPad(inputHex, 32);
     const inputString = hexToAscii(inputBytes32);
 
     const outputString = encrypt(inputString, keyString);
