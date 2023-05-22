@@ -6,7 +6,7 @@ pragma solidity >=0.8.0;
 interface IGameSystem {
   function getCards() external view returns (bytes32[52] memory);
 
-  function isValidCard(bytes32 card) external view returns (bool);
+  function isValidCard(bytes32 card) external pure returns (bool);
 
   function createGame(bytes32 gameId) external;
 

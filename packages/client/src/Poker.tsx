@@ -2,7 +2,7 @@ import { useMUD } from "./MUDContext";
 import { useMount } from "ahooks";
 import { useEffect, useState } from "react";
 import { GameState, CARDS, getKey, encryptArray, randowArray, substrWalletText4 } from "./util"
-const rc4 = require('rc4-cipher');
+const rc4 = import('rc4-cipher');
 type Props = {
     game: {
         state: number
