@@ -68,6 +68,7 @@ export const App = () => {
             <ul className={'game-warp'}>
                 <li>state: <span>{getGameState(game?.state)}</span></li>
                 <li>turn: <span>{game?.turn}</span></li>
+                <li>wallet: <span>{walletAddress}</span></li>
             </ul>
             {
                 isJoinedGame ? <Poker game={game} gameId={gameId} /> : <>

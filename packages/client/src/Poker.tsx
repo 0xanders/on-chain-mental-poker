@@ -128,7 +128,7 @@ export const Poker = (props: Props) => {
                                 props.game.state === GameState.Finished &&
                                 <span className={`btn-tool ${props.game.winner === wallet ? 'winner' : 'fail'}`}>
                                     {
-                                        props.game.winner === wallet ? 'Winner' : 'Fail'
+                                        props.game.winner === wallet ? 'Winner' : 'Loser'
                                     }
                                 </span>
                             }
