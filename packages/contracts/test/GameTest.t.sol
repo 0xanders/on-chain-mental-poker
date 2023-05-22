@@ -128,9 +128,9 @@ contract GameTest is MudV2Test {
     vm.startPrank(Alice);
     others[0] = Bob;
     others[1] = Carl;
-    
-    tempCardsHash[0] = HandCard.getTempCardHash(world, gameId, Bob);
-    tempCardsHash[1] = HandCard.getTempCardHash(world, gameId, Carl);
+        
+    tempCardsHash[0] = HandCard.getTempCardHash(world, world.getIdByGameIdAndPlayerAddress(gameId, Bob));
+    tempCardsHash[1] = HandCard.getTempCardHash(world, world.getIdByGameIdAndPlayerAddress(gameId, Carl));
     
     tempCardsHash[0] = world.rc4EncryptBytes32(tempCardsHash[0], secretKey_Alice);
     tempCardsHash[1] = world.rc4EncryptBytes32(tempCardsHash[1], secretKey_Alice);
@@ -144,8 +144,8 @@ contract GameTest is MudV2Test {
     others[0] = Alice;
     others[1] = Carl;
     
-    tempCardsHash[0] = HandCard.getTempCardHash(world, gameId, Alice);
-    tempCardsHash[1] = HandCard.getTempCardHash(world, gameId, Carl);
+    tempCardsHash[0] = HandCard.getTempCardHash(world, world.getIdByGameIdAndPlayerAddress(gameId, Alice));
+    tempCardsHash[1] = HandCard.getTempCardHash(world, world.getIdByGameIdAndPlayerAddress(gameId, Carl));
     
     tempCardsHash[0] = world.rc4EncryptBytes32(tempCardsHash[0], secretKey_Bob);
     tempCardsHash[1] = world.rc4EncryptBytes32(tempCardsHash[1], secretKey_Bob);
@@ -158,8 +158,8 @@ contract GameTest is MudV2Test {
     others[0] = Alice;
     others[1] = Bob;
     
-    tempCardsHash[0] = HandCard.getTempCardHash(world, gameId, Alice);
-    tempCardsHash[1] = HandCard.getTempCardHash(world, gameId, Bob);
+    tempCardsHash[0] = HandCard.getTempCardHash(world, world.getIdByGameIdAndPlayerAddress(gameId, Alice));
+    tempCardsHash[1] = HandCard.getTempCardHash(world, world.getIdByGameIdAndPlayerAddress(gameId, Bob));
     
     tempCardsHash[0] = world.rc4EncryptBytes32(tempCardsHash[0], secretKey_Carl);
     tempCardsHash[1] = world.rc4EncryptBytes32(tempCardsHash[1], secretKey_Carl);
