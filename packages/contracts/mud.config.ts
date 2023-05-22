@@ -33,6 +33,7 @@ export default mudConfig({
     },
 
     HandCard: {
+      dataStruct: true,
       keySchema: {
         id: "bytes32",
       },

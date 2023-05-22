@@ -27,14 +27,28 @@ export function createSystemCalls(
   const shuffleAndSave = async (gameId: string, msgToSign: string, resultOfSign: string, cardsHash: Array<string>) => {
     const byte32GameId = ethers.utils.formatBytes32String(gameId);
     const gameEntity = world.registerEntity({ id: byte32GameId })
-    const tx = await worldSend("shuffleAndSave", [byte32GameId, ethers.utils.formatBytes32String(msgToSign), ethers.utils.formatBytes32String(resultOfSign), cardsHash]);
+    const tx = await worldSend("shuffleAndSave", [byte32GameId, msgToSign, resultOfSign, cardsHash]);
     await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
     return getComponentValue(Game, gameEntity);
   };
-
+  const dealCards = async (gameId: string) => {
+    const byte32GameId = ethers.utils.formatBytes32String(gameId);
+    const gameEntity = world.registerEntity({ id: byte32GameId })
+    const tx = await worldSend("dealCards", [byte32GameId]);
+    await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
+    return getComponentValue(Game, gameEntity);
+  };
+  // const decryptForOthers = async (gameId: string, others: Array<string>, tempCardsHash: Array<string>) => {
+  //   const byte32GameId = ethers.utils.formatBytes32String(gameId);
+  //   const gameEntity = world.registerEntity({ id: byte32GameId })
+  //   const tx = await worldSend("dealCards", [byte32GameId, others, tempCardsHash]);
+  //   await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
+  //   return getComponentValue(Game, gameEntity);
+  // };
   return {
     createGame,
     joinInGame,
-    shuffleAndSave
+    shuffleAndSave,
+    dealCards,
   };
 }

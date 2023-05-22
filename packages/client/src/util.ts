@@ -31,18 +31,18 @@ export function URLSearchParams (): Map<string, string> {
  * @param length
  * @returns uuid string
  */
-export function uuidGen(length = 32) {
-    const chars = '0123456789abcdefghijklmnopqrstuvwxyz'.split('')
-    const uuid = []
-    let r
-    uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-'
-    for (let i = 0; i < length; i++) {
-        if (!uuid[i]) {
-            r = 0 | Math.random() * 16
-            uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r]
-        }
-    }
-    return uuid.join('')
+export function uuidGen(length = 16) {
+    // const chars = '0123456789abcdefghijklmnopqrstuvwxyz'.split('')
+    // const uuid = []
+    // let r
+    // for (let i = 0; i < length; i++) {
+    //     if (!uuid[i]) {
+    //         r = 0 | Math.random() * 16
+    //         uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r]
+    //     }
+    // }
+    // return uuid.join('')
+    return new Date().getTime().toString()
 }
 export function getSecretKey(length = 32) {
     const uuid = sessionStorage.getItem('key:uuid') || uuidGen()
@@ -57,19 +57,17 @@ export function randowArray(arr: Array<any>){
     }
     return arr
 }
-// export function getBytes32Key(key: string): string {
-//     let keyHex = web3.utils.asciiToHex(key);
-//     return web3.eth.abi.encodeParameter("bytes32", keyHex);
-// }
+export function utf8Key(key: string): string {
+    const keyBytes32 = ethers.utils.formatBytes32String(key);
+    const keyStr = ethers.utils.toUtf8String(keyBytes32);
+    return keyStr
+}
 export function encryptArray(arr: Array<any>, key: string): Array<string> {
     return arr.map((str) => {
-        // let inputString = web3.utils.hexToAscii(str);
-        // let keyByte32 = getBytes32Key(key);
-        // let keyString = web3.utils.hexToAscii(keyByte32);
-        // const output1 = encrypt(inputString, keyString)
-        // let output1Hex = web3.utils.asciiToHex(output1);
-        // return inputString;
-        return ''
+        const inputString = ethers.utils.toUtf8String(str);
+        const output1 =  encrypt(inputString, utf8Key(key));
+        const output2 = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(output1))
+        return output2
     })
 }
 export function substrWalletText4(account: string){
