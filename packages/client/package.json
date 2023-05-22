@@ -20,6 +20,7 @@
     "@latticexyz/recs": "2.0.0-alpha.1.169+9e98a81c",
     "@latticexyz/schema-type": "2.0.0-alpha.1.169+9e98a81c",
     "@latticexyz/std-client": "2.0.0-alpha.1.169+9e98a81c",
+    "@latticexyz/store-cache": "2.0.0-alpha.1.105",
     "@latticexyz/utils": "2.0.0-alpha.1.169+9e98a81c",
     "@latticexyz/world": "2.0.0-alpha.1.169+9e98a81c",
     "@wagmi/chains": "^0.2.22",

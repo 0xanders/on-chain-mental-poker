@@ -23,11 +23,11 @@ const getGameState = (state: number) => {
             return 'Error'
         case GameState.Finished:
             return 'Finished'
-        return 'Join'
+            return 'Join'
     }
 }
 export const App = () => {
-    const {walletAddress, components: { Game }, systemCalls: { createGame, joinInGame }} = useMUD();
+    const { walletAddress, components: { Game }, systemCalls: { createGame, joinInGame } } = useMUD();
     const [gameId, setGameId] = useState('')
     const [isJoinedGame, setIsJoinedGame] = useState(false)
     const byte32GameId = ethers.utils.formatBytes32String(gameId);
@@ -38,7 +38,7 @@ export const App = () => {
     const createOrJoinGame = async () => {
         if (game && !game?.players.includes(walletAddress)) {
             await joinInGame(gameId)
-        } else if (!game){
+        } else if (!game) {
             await createGame(gameId)
         }
         setIsJoinedGame(true)
@@ -64,25 +64,21 @@ export const App = () => {
         }
     })
     return (
-    <>
-        {
-            isJoinedGame ? <Poker game={game} gameId={gameId}/> : <>
-                <ul className={'game-warp'}>
-                    <li>state: <span>{game?.state}({getGameState(game?.state)})</span></li>
-                    <li>turn: <span>{game?.turn}</span></li>
-                    <li>cardIndex: <span>{game?.cardIndex}</span></li>
-                    {/*<li>winner: <span>{game?.winner}</span></li>*/}
-                    {/*<li>cardsHash: <span>{game?.cardsHash}</span></li>*/}
-                    <li>players: <span>{game?.players}</span></li>
-                </ul>
-                <div className={'form'}>
-                    <input value={gameId} placeholder={'Please enter gameID'} onChange={(e: any) => {
-                        setGameId(e.target.value || '')
-                    }}/>
-                    <button onClick={createOrJoinGame}>{game ? 'Join Game' : 'Create Game'}</button>
-                </div>
-            </>
-        }
-    </>
-  );
+        <div className={'app'}>
+            <ul className={'game-warp'}>
+                <li>state: <span>{getGameState(game?.state)}</span></li>
+                <li>turn: <span>{game?.turn}</span></li>
+            </ul>
+            {
+                isJoinedGame ? <Poker game={game} gameId={gameId} /> : <>
+                    <div className={'form'}>
+                        <input value={gameId} placeholder={'Please enter gameID'} onChange={(e: any) => {
+                            setGameId(e.target.value || '')
+                        }} />
+                        <button onClick={createOrJoinGame}>{game ? 'Join Game' : 'Create Game'}</button>
+                    </div>
+                </>
+            }
+        </div>
+    );
 };

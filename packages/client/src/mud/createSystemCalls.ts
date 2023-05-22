@@ -41,7 +41,15 @@ export function createSystemCalls(
   const decryptForOthers = async (gameId: string, others: Array<string>, tempCardsHash: Array<string>) => {
     const byte32GameId = ethers.utils.formatBytes32String(gameId);
     const gameEntity = world.registerEntity({ id: byte32GameId })
-    const tx = await worldSend("dealCards", [byte32GameId, others, tempCardsHash]);
+    const tx = await worldSend("decryptCard", [byte32GameId, others, tempCardsHash]);
+    await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
+    return getComponentValue(Game, gameEntity);
+  };
+
+  const uploadSecretKey = async (gameId: string, secretKey: string) => {
+    const byte32GameId = ethers.utils.formatBytes32String(gameId);
+    const gameEntity = world.registerEntity({ id: byte32GameId })
+    const tx = await worldSend("uploadSecretKey", [byte32GameId, secretKey]);
     await awaitStreamValue(txReduced$, (txHash) => txHash === tx.hash);
     return getComponentValue(Game, gameEntity);
   };
@@ -50,6 +58,7 @@ export function createSystemCalls(
     joinInGame,
     shuffleAndSave,
     dealCards,
-    decryptForOthers
+    decryptForOthers,
+    uploadSecretKey
   };
 }

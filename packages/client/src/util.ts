@@ -82,7 +82,7 @@ export function URLSearchParams (): Map<string, string> {
 export function getSecretKey() {
     const uuid = sessionStorage.getItem('SecretKey:UUID') || Math.floor(new Date().getTime() * Math.random()).toString()
     sessionStorage.setItem('SecretKey:UUID', uuid)
-    return 'uuid'
+    return uuid
 }
 export function randowArray(arr: Array<any>){
     let i = arr.length;
