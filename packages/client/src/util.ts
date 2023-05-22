@@ -11,6 +11,59 @@ export enum GameState {
     Error,
     Finished// 游戏结束
 }
+
+
+/**
+ * Check if string is HEX, requires a 0x in front
+ *
+ * @method isHexStrict
+ * @param {String} hex to be checked
+ * @returns {Boolean}
+ */
+const isHexStrict = function (hex: any) {
+    return ((typeof hex === 'string' || typeof hex === 'number') && /^(-)?0x[0-9a-f]*$/i.test(hex));
+};
+
+/**
+ * Should be called to get ascii from it's hex representation
+ *
+ * @method hexToAscii
+ * @param {String} hex
+ * @returns {String} ascii string representation of hex value
+ */
+const hexToAscii = function (hex: any) {
+    if (!isHexStrict(hex))
+        throw new Error('The parameter must be a valid HEX string.');
+    var str = "";
+    var i = 0, l = hex.length;
+    if (hex.substring(0, 2) === '0x') {
+        i = 2;
+    }
+    for (; i < l; i += 2) {
+        var code = parseInt(hex.slice(i, i + 2), 16);
+        str += String.fromCharCode(code);
+    }
+    return str;
+};
+/**
+ * Should be called to get hex representation (prefixed by 0x) of ascii string
+ *
+ * @method asciiToHex
+ * @param {String} str
+ * @returns {String} hex representation of input string
+ */
+const asciiToHex = function (str: any) {
+    if (!str)
+        return "0x00";
+    var hex = "";
+    for (var i = 0; i < str.length; i++) {
+        var code = str.charCodeAt(i);
+        var n = code.toString(16);
+        hex += n.length < 2 ? '0' + n : n;
+    }
+    return "0x" + hex;
+};
+
 export function URLSearchParams (): Map<string, string> {
     const search = window.location.search
     const map:Map<string, string> = new Map()
@@ -46,14 +99,19 @@ export function utf8Key(key: string): string {
 }
 export function encryptArray(arr: Array<any>, key: string): Array<string> {
     return arr.map((str) => {
-        const inputString = ethers.utils.toUtf8String(str);
+        debugger
+        // const inputString = ethers.utils.toUtf8String(str);
 
-        const keyBytes32 = ethers.utils.formatBytes32String(key);
-        const keyStr = ethers.utils.toUtf8String(keyBytes32);
+        // const keyBytes32 = ethers.utils.formatBytes32String(key);
+        // const keyStr = ethers.utils.toUtf8String(keyBytes32);
 
-        const output1 =  encrypt(inputString, keyStr);
-        const output2 = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(output1))
-        return output2
+        // const output1 =  encrypt(inputString, keyStr);
+        // const output2 = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(output1))
+        // return output2
+        const inputStr = ethers.utils.parseBytes32String('0x1000000000000000000000000000000000000000000000000000000000000000');
+        debugger
+
+        return inputStr
     })
 }
 export function substrWalletText4(account: string){

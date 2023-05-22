@@ -47,7 +47,7 @@ export const Poker = (props: Props) => {
             const secretKey = getSecretKey();
             // const keyBytes32 = ethers.utils.formatBytes32String(secretKey);
             // const keyStr = ethers.utils.toUtf8String(keyBytes32);
-            // cardArr = encryptArray(cardArr, secretKey);
+            cardArr = encryptArray(cardArr, secretKey);
             // // cardArr = randowArray(cardArr);
 
             // const msgToSign = ethers.utils.formatBytes32String("0xPoker");
