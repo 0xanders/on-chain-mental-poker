@@ -57,7 +57,7 @@ export function encryptArray(arr: Array<any>, key: string): Array<string> {
     })
 }
 export function substrWalletText4(account: string){
-    const address = account ? account.toLowerCase().replace(/([\w]{6})[\w\W]+([\w]{4})$/, '$1…$2') : ''
+    const address = account ? account.toLowerCase().replace(/([\w]{4})[\w\W]+([\w]{4})$/, '$1…$2') : ''
     return address
 }
 

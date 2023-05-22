@@ -113,7 +113,10 @@ export const Poker = (props: Props) => {
                             }
                             <span className={'poker-user'}>
                                 {
-                                    wallet === walletAddress ? "YOU" : (wallet ? substrWalletText4(wallet) : '?')
+                                    wallet ? substrWalletText4(wallet) : '?'
+                                }
+                                {
+                                    wallet === walletAddress && " (YOU)"
                                 }
                             </span>
                         </div>
