@@ -26,17 +26,9 @@ export function URLSearchParams (): Map<string, string> {
     }
     return map
 }
-/**
- * gen uuid
- * @param length
- * @returns uuid string
- */
-export function uuidGen(length = 16) {
-    return new Date().getTime().toString()
-}
-export function getSecretKey(length = 32) {
-    const uuid = sessionStorage.getItem('key:uuid') || uuidGen()
-    sessionStorage.setItem('key:uuid', uuid)
+export function getSecretKey() {
+    const uuid = sessionStorage.getItem('SecretKey:UUID') || Math.floor(new Date().getTime() * Math.random()).toString()
+    sessionStorage.setItem('SecretKey:UUID', uuid)
     return uuid
 }
 export function randowArray(arr: Array<any>){
