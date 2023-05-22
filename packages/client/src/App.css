@@ -68,6 +68,21 @@
     width: 150px;
     text-align: center;
 }
+.poker-item:nth-child(1) {
+    top: -20px;
+    left: 100px;
+    transform: rotate(90deg);
+}
+.poker-item:nth-child(2) {
+    top: -20px;
+    right: 100px;
+    transform: rotate(-90deg);
+}
+.poker-item:nth-child(3) {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50px);
+}
 .poker-item .poker-card {
     display: inline-block;
     width: 146px;
@@ -93,19 +108,4 @@
 .poker-item .btn-tool.disable {
     pointer-events: none;
     background-color: gray;
-}
-.poker-item.poker-left {
-    top: -20px;
-    left: 60px;
-    transform: rotate(90deg);
-}
-.poker-item.poker-right {
-    top: -20px;
-    right: 60px;
-    transform: rotate(-90deg);
-}
-.poker-item.poker-self {
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50px);
 }

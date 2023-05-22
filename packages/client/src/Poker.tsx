@@ -45,19 +45,18 @@ export const Poker = (props: Props) => {
         if (props.game.state === GameState.Shuffle) {
             let cardArr = [...props.game.cardsHash];
             const secretKey = getSecretKey();
+            // const keyBytes32 = ethers.utils.formatBytes32String(secretKey);
+            // const keyStr = ethers.utils.toUtf8String(keyBytes32);
+            // cardArr = encryptArray(cardArr, secretKey);
+            // // cardArr = randowArray(cardArr);
 
-            const keyBytes32 = ethers.utils.formatBytes32String(secretKey);
-            const keyStr = ethers.utils.toUtf8String(keyBytes32);
-
-            cardArr = encryptArray(cardArr, secretKey);
-            // cardArr = randowArray(cardArr);
+            // const msgToSign = ethers.utils.formatBytes32String("0xPoker");
+            // const msgToSign2 = ethers.utils.toUtf8String(msgToSign);
+            // let resultOfSign = encrypt(msgToSign2, keyStr);
+            // resultOfSign = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(resultOfSign))
 
             const msgToSign = ethers.utils.formatBytes32String("0xPoker");
-            const msgToSign2 = ethers.utils.toUtf8String(msgToSign);
-            let resultOfSign = encrypt(msgToSign2, keyStr);
-
-            resultOfSign = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(resultOfSign))
-
+            let resultOfSign = encrypt(msgToSign, secretKey);
             shuffleAndSave(props.gameId, msgToSign, resultOfSign, cardArr)
         } else if (props.game.state === GameState.DealCards) {
             dealCards(props.gameId)
@@ -90,69 +89,37 @@ export const Poker = (props: Props) => {
     }, [walletAddress, props.game])
     return (
         <div className={'poker-warp'}>
-            <div className={'poker-item poker-left'}>
-                <span className={'poker-card'}>🂠</span>
-                {
-                    props.game.state !== GameState.Join &&
-                    <span className={`btn-tool disable`} onClick={clickTool}>
-                        {
-                             props.game.state === GameState.Shuffle && <>Shuffle</>
-                        }
-                        {
-                             props.game.state === GameState.DealCards && <>DealCards</>
-                        }
-                        {
-                             props.game.state === GameState.DecryptForOthers && <>DecryptForOthers</>
-                        }
-                        {
-                             props.game.state === GameState.UploadSecret && <>UploadSecret</>
-                        }
-                       </span>
-                }
-                <span className={'poker-user'}>{leftPlayer.wallet ? substrWalletText4(leftPlayer.wallet) : '?'}</span>
-            </div>
-            <div className={'poker-item poker-right'}>
-                <span className={'poker-card'}>🂠</span>
-                {
-                    props.game.state !== GameState.Join &&
-                    <span className={`btn-tool disable`} onClick={clickTool}>
-                        {
-                             props.game.state === GameState.Shuffle && <>Shuffle</>
-                        }
-                        {
-                             props.game.state === GameState.DealCards && <>DealCards</>
-                        }
-                        {
-                             props.game.state === GameState.DecryptForOthers && <>DecryptForOthers</>
-                        }
-                        {
-                             props.game.state === GameState.UploadSecret && <>UploadSecret</>
-                        }
-                       </span>
-                }
-                <span className={'poker-user'}>{rightPlayer.wallet ? substrWalletText4(rightPlayer.wallet) : '?'}</span>
-            </div>
-            <div className={'poker-item poker-self'}>
-                <span className={'poker-card'}>🂠</span>
-                {
-                    props.game.state !== GameState.Join &&
-                    <span className={`btn-tool ${props.game.turn === selfPlayer.turnIdx ? '' : 'disable'}`} onClick={clickTool}>
-                        {
-                             props.game.state === GameState.Shuffle && <>Shuffle</>
-                        }
-                        {
-                             props.game.state === GameState.DealCards && <>DealCards</>
-                        }
-                        {
-                             props.game.state === GameState.DecryptForOthers && <>DecryptForOthers</>
-                        }
-                        {
-                             props.game.state === GameState.UploadSecret && <>UploadSecret</>
-                        }
-                       </span>
-                }
-                <span className={'poker-user'}>YOU</span>
-            </div>
+            {
+                props.game.players.map((wallet, idx) => {
+                    return <>
+                        <div key={Math.random()} className={'poker-item'}>
+                            <span className={'poker-card'}>{props.game.state > 1 ? '🂠' : ''}</span>
+                            {
+                                props.game.state !== GameState.Join &&
+                                <span className={`btn-tool ${wallet === walletAddress && props.game.turn === idx ? '' : 'disable'}`} onClick={clickTool}>
+                                    {
+                                        props.game.state === GameState.Shuffle && <>Shuffle</>
+                                    }
+                                    {
+                                        props.game.state === GameState.DealCards && <>DealCards</>
+                                    }
+                                    {
+                                        props.game.state === GameState.DecryptForOthers && <>DecryptForOthers</>
+                                    }
+                                    {
+                                        props.game.state === GameState.UploadSecret && <>UploadSecret</>
+                                    }
+                                </span>
+                            }
+                            <span className={'poker-user'}>
+                                {
+                                    wallet === walletAddress ? "YOU" : (wallet ? substrWalletText4(wallet) : '?')
+                                }
+                            </span>
+                        </div>
+                    </>
+                })
+            }
         </div>
     );
 };

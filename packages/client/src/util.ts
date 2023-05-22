@@ -32,16 +32,6 @@ export function URLSearchParams (): Map<string, string> {
  * @returns uuid string
  */
 export function uuidGen(length = 16) {
-    // const chars = '0123456789abcdefghijklmnopqrstuvwxyz'.split('')
-    // const uuid = []
-    // let r
-    // for (let i = 0; i < length; i++) {
-    //     if (!uuid[i]) {
-    //         r = 0 | Math.random() * 16
-    //         uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r]
-    //     }
-    // }
-    // return uuid.join('')
     return new Date().getTime().toString()
 }
 export function getSecretKey(length = 32) {
@@ -65,7 +55,11 @@ export function utf8Key(key: string): string {
 export function encryptArray(arr: Array<any>, key: string): Array<string> {
     return arr.map((str) => {
         const inputString = ethers.utils.toUtf8String(str);
-        const output1 =  encrypt(inputString, utf8Key(key));
+
+        const keyBytes32 = ethers.utils.formatBytes32String(key);
+        const keyStr = ethers.utils.toUtf8String(keyBytes32);
+
+        const output1 =  encrypt(inputString, keyStr);
         const output2 = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(output1))
         return output2
     })
