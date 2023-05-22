@@ -1,8 +1,8 @@
 import { useMUD } from "./MUDContext";
-import { useComponentValue } from "@latticexyz/react";
+import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useMount } from "ahooks";
 import { useEffect, useState } from "react";
-import { GameState, getSecretKey, encryptArray, randowArray, utf8Key,encryptSingle, substrWalletText4 } from "./util";
+import { GameState, getSecretKey, encryptCards, asciiToHex, randowArray, utf8Key, encryptMsg, substrWalletText4 } from "./util";
 import { encrypt } from "./rc4";
 import { ethers } from "ethers";
 import { world } from "./mud/world";
@@ -45,23 +45,32 @@ export const Poker = (props: Props) => {
         if (props.game.state === GameState.Shuffle) {
             let cardArr = [...props.game.cardsHash];
             const secretKey = getSecretKey();
-            // const keyBytes32 = ethers.utils.formatBytes32String(secretKey);
-            // const keyStr = ethers.utils.toUtf8String(keyBytes32);
-            cardArr = encryptArray(cardArr, secretKey);
+            cardArr = encryptCards(cardArr, secretKey);
             // // cardArr = randowArray(cardArr);
 
-            // const msgToSign = ethers.utils.formatBytes32String("0xPoker");
-            // const msgToSign2 = ethers.utils.toUtf8String(msgToSign);
-            // let resultOfSign = encrypt(msgToSign2, keyStr);
-            // resultOfSign = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(resultOfSign))
-
             const msgToSign = "0xPoker";
-            const resultOfSign = encryptSingle(msgToSign, secretKey);
-            shuffleAndSave(props.gameId, msgToSign, resultOfSign, cardArr)
+            const msgToSignHex = asciiToHex(msgToSign);
+            const msgToSignByte = ethers.utils.hexZeroPad(msgToSignHex, 32);
+            const resultOfSign = encryptMsg(msgToSign, secretKey);
+            shuffleAndSave(props.gameId, msgToSignByte, resultOfSign, cardArr)
         } else if (props.game.state === GameState.DealCards) {
             dealCards(props.gameId)
         } else if (props.game.state === GameState.DecryptForOthers) {
             // dealCards(props.gameId)
+            const otherPlayers = [...props.game.players]
+            const selfIdx = otherPlayers.indexOf(walletAddress)
+            otherPlayers.splice(selfIdx, 1)
+            const byte32GameId = ethers.utils.formatBytes32String(props.gameId);
+
+            // const tempCardsHash = otherPlayers.map((walletStr) => {
+            //     const encodedDataStr = ethers.utils.solidityPack(['bytes32', 'address'], [byte32GameId, walletStr]);
+            //     const otherHandCardId = ethers.utils.keccak256(encodedDataStr);
+            //     const entity = world.registerEntity({ id: otherHandCardId });
+            //     const handCard = useComponentValue(HandCard, handCardEntity);
+            //     debugger
+            //     return handCard?.tempCardHash
+            // })
+            // dealCards(props.gameId, otherPlayers, tempCardsHash)
         }
     }
     useEffect(() => {

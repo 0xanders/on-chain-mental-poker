@@ -31,7 +31,7 @@ const isHexStrict = function (hex: any) {
  * @param {String} hex
  * @returns {String} ascii string representation of hex value
  */
-const hexToAscii = function (hex: any) {
+export const hexToAscii = function (hex: any) {
     if (!isHexStrict(hex))
         throw new Error('The parameter must be a valid HEX string.');
     var str = "";
@@ -52,7 +52,7 @@ const hexToAscii = function (hex: any) {
  * @param {String} str
  * @returns {String} hex representation of input string
  */
-const asciiToHex = function (str: any) {
+export const asciiToHex = function (str: any) {
     if (!str)
         return "0x00";
     var hex = "";
@@ -98,10 +98,23 @@ export function utf8Key(key: string): string {
     return keyStr
 }
 
-export function encryptSingle(input: string, key: string): string {
+export function encryptCard(input: string, key: string): string {
     const keyHex = asciiToHex(key);
     const keyByte32 = ethers.utils.hexZeroPad(keyHex, 32)
 
+    const keyString = hexToAscii(keyByte32);
+
+    const inputString = hexToAscii(input);
+    
+    const outputString = encrypt(inputString, keyString);
+    const outputBytes32 = asciiToHex(outputString);
+
+    return outputBytes32
+
+}
+export function encryptMsg(input: string, key: string): string {
+    const keyHex = asciiToHex(key);
+    const keyByte32 = ethers.utils.hexZeroPad(keyHex, 32)
     const keyString = hexToAscii(keyByte32);
 
     const inputHex = asciiToHex(input);
@@ -109,19 +122,17 @@ export function encryptSingle(input: string, key: string): string {
     const inputString = hexToAscii(inputBytes32);
 
     const outputString = encrypt(inputString, keyString);
+    
     const outputBytes32 = asciiToHex(outputString);
 
-    return outputBytes32
-
+    return outputBytes32;
 }
 
-export function encryptArray(arr: Array<any>, key: string): Array<string> {
+export function encryptCards(arr: Array<any>, key: string): Array<string> {
     return arr.map((str) => {                
-        return encryptSingle(str, key)
+        return encryptCard(str, key)
     })
 }
-
-
 
 export function substrWalletText4(account: string){
     const address = account ? account.toLowerCase().replace(/([\w]{4})[\w\W]+([\w]{4})$/, '$1…$2') : ''
