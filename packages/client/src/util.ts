@@ -1,5 +1,4 @@
 import { ethers } from "ethers";
-import rc4Cipher from 'rc4-cipher'
 export enum GameState {
     Join, // 加入游戏
     Shuffle, // 洗牌
@@ -61,11 +60,11 @@ export function randowArray(arr: Array<any>){
     }
     return arr
 }
-export function encryptArray(arr: Array<any>, key: string){
-    return arr.map((str) => {
-        return rc4Cipher.encrypt(str, key);
-    })
-}
+// export function encryptArray(arr: Array<any>, key: string){
+//     return arr.map((str) => {
+//         return rc4Cipher.encrypt(str, key);
+//     })
+// }
 export function substrWalletText4(account: string){
     const address = account ? account.toLowerCase().replace(/([\w]{6})[\w\W]+([\w]{4})$/, '$1…$2') : ''
     return address
