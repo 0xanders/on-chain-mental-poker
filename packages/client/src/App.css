@@ -88,6 +88,7 @@
 }
 .poker-item .btn-tool {
     margin: 10px 0;
+    cursor: pointer;
 }
 .poker-item .btn-tool.disable {
     pointer-events: none;

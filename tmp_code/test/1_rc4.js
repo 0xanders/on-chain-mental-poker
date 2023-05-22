@@ -72,7 +72,7 @@ contract("test RC4", async accounts => {
 
         let key = "key";
         let keyHex = web3.utils.asciiToHex(key);
-        let keyByte32 =   web3.eth.abi.encodeParameter("bytes32", keyHex);
+        let keyByte32 = web3.eth.abi.encodeParameter("bytes32", keyHex);
         let keyString = web3.utils.hexToAscii(keyByte32);
         
         let output1 =  rc4js.encrypt(inputString,keyString);

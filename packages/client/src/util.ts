@@ -1,4 +1,7 @@
 import { ethers } from "ethers";
+import { encrypt } from "./rc4";
+// import Web3 from "web3";
+// const web3 = new Web3();
 export enum GameState {
     Join, // 加入游戏
     Shuffle, // 洗牌
@@ -8,12 +11,6 @@ export enum GameState {
     Error,
     Finished// 游戏结束
 }
-export const CARDS = [
-    ethers.utils.formatBytes32String('1'), ethers.utils.formatBytes32String('2'), ethers.utils.formatBytes32String('3'), ethers.utils.formatBytes32String('4'), ethers.utils.formatBytes32String('5'), ethers.utils.formatBytes32String('6'), ethers.utils.formatBytes32String('7'), ethers.utils.formatBytes32String('8'), ethers.utils.formatBytes32String('9'), ethers.utils.formatBytes32String('10'), ethers.utils.formatBytes32String('11'), ethers.utils.formatBytes32String('12'), ethers.utils.formatBytes32String('13'),
-    ethers.utils.formatBytes32String('14'), ethers.utils.formatBytes32String('15'), ethers.utils.formatBytes32String('16'), ethers.utils.formatBytes32String('17'), ethers.utils.formatBytes32String('18'), ethers.utils.formatBytes32String('19'), ethers.utils.formatBytes32String('20'), ethers.utils.formatBytes32String('21'), ethers.utils.formatBytes32String('22'), ethers.utils.formatBytes32String('23'), ethers.utils.formatBytes32String('24'), ethers.utils.formatBytes32String('25'), ethers.utils.formatBytes32String('26'),
-    ethers.utils.formatBytes32String('27'), ethers.utils.formatBytes32String('28'), ethers.utils.formatBytes32String('29'), ethers.utils.formatBytes32String('30'), ethers.utils.formatBytes32String('31'), ethers.utils.formatBytes32String('32'), ethers.utils.formatBytes32String('33'), ethers.utils.formatBytes32String('34'), ethers.utils.formatBytes32String('35'), ethers.utils.formatBytes32String('36'), ethers.utils.formatBytes32String('37'), ethers.utils.formatBytes32String('38'), ethers.utils.formatBytes32String('39'),
-    ethers.utils.formatBytes32String('40'), ethers.utils.formatBytes32String('41'), ethers.utils.formatBytes32String('42'), ethers.utils.formatBytes32String('43'), ethers.utils.formatBytes32String('44'), ethers.utils.formatBytes32String('45'), ethers.utils.formatBytes32String('46'), ethers.utils.formatBytes32String('47'), ethers.utils.formatBytes32String('48'), ethers.utils.formatBytes32String('49'), ethers.utils.formatBytes32String('50'), ethers.utils.formatBytes32String('51'), ethers.utils.formatBytes32String('52')
-]
 export function URLSearchParams (): Map<string, string> {
     const search = window.location.search
     const map:Map<string, string> = new Map()
@@ -47,7 +44,7 @@ export function uuidGen(length = 32) {
     }
     return uuid.join('')
 }
-export function getKey(length = 32) {
+export function getSecretKey(length = 32) {
     const uuid = sessionStorage.getItem('key:uuid') || uuidGen()
     sessionStorage.setItem('key:uuid', uuid)
     return uuid
@@ -60,11 +57,21 @@ export function randowArray(arr: Array<any>){
     }
     return arr
 }
-// export function encryptArray(arr: Array<any>, key: string){
-//     return arr.map((str) => {
-//         return rc4Cipher.encrypt(str, key);
-//     })
+// export function getBytes32Key(key: string): string {
+//     let keyHex = web3.utils.asciiToHex(key);
+//     return web3.eth.abi.encodeParameter("bytes32", keyHex);
 // }
+export function encryptArray(arr: Array<any>, key: string): Array<string> {
+    return arr.map((str) => {
+        // let inputString = web3.utils.hexToAscii(str);
+        // let keyByte32 = getBytes32Key(key);
+        // let keyString = web3.utils.hexToAscii(keyByte32);
+        // const output1 = encrypt(inputString, keyString)
+        // let output1Hex = web3.utils.asciiToHex(output1);
+        // return inputString;
+        return ''
+    })
+}
 export function substrWalletText4(account: string){
     const address = account ? account.toLowerCase().replace(/([\w]{6})[\w\W]+([\w]{4})$/, '$1…$2') : ''
     return address

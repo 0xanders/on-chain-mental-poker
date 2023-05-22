@@ -42,7 +42,9 @@ export const App = () => {
             await createGame(gameId)
         }
         setIsJoinedGame(true)
-        window.location.href = `${window.location.href}&gameId=${gameId}`
+        const params = URLSearchParams();
+        const worldAddress = params.get('worldAddress') || ''
+        window.location.href = `${window.location.origin}/?dev=true&worldAddress=${worldAddress}&gameId=${gameId}`
     }
     useEffect(() => {
         if (game) {
@@ -64,7 +66,7 @@ export const App = () => {
     return (
     <>
         {
-            isJoinedGame ? <Poker game={game}/> : <>
+            isJoinedGame ? <Poker game={game} gameId={gameId}/> : <>
                 <ul className={'game-warp'}>
                     <li>state: <span>{game?.state}({getGameState(game?.state)})</span></li>
                     <li>turn: <span>{game?.turn}</span></li>
