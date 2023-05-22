@@ -70,6 +70,10 @@ contract GameTest is MudV2Test {
 
     vm.startPrank(Alice);
     cardsHash = Game.getCardsHash(world, gameId); // get Current cardsHash from world
+    assertEq(cardsHash[0], bytes32(uint256(1)));
+    assertEq(cardsHash[1], bytes32(uint256(2)));
+
+
     for (uint i = 0; i < cardsHash.length; i++) {
       // shuffle is not done here, the client should to the shuffle works 
       cardsHash[i] = world.rc4EncryptBytes32(cardsHash[i], secretKey_Alice); // encrypt cardsHash with secretKey
@@ -179,5 +183,6 @@ contract GameTest is MudV2Test {
     vm.stopPrank();
     
     assertTrue(Game.getState(world, gameId) == GameState.Finished, "current game state should be Finished");    
+    assertTrue(Game.getWinner(world, gameId) == Carl, "wrong winner");    
   }
 }

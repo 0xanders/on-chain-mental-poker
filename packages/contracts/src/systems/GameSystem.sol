@@ -9,25 +9,6 @@ import { GameState } from "../codegen/Types.sol";
 
 contract GameSystem is System {
 
-
-  bytes32[52] private CARDS = [
-        bytes32(uint256(1)), bytes32(uint256(2)), bytes32(uint256(3)), bytes32(uint256(4)),
-        bytes32(uint256(5)), bytes32(uint256(6)), bytes32(uint256(7)), bytes32(uint256(8)), bytes32(uint256(9)),
-        bytes32(uint256(10)), bytes32(uint256(11)), bytes32(uint256(12)), bytes32(uint256(13)), bytes32(uint256(14)),
-        bytes32(uint256(15)), bytes32(uint256(16)), bytes32(uint256(17)), bytes32(uint256(18)), bytes32(uint256(19)),
-        bytes32(uint256(20)), bytes32(uint256(21)), bytes32(uint256(22)), bytes32(uint256(23)), bytes32(uint256(24)),
-        bytes32(uint256(25)), bytes32(uint256(26)), bytes32(uint256(27)), bytes32(uint256(28)), bytes32(uint256(29)),
-        bytes32(uint256(30)), bytes32(uint256(31)), bytes32(uint256(32)), bytes32(uint256(33)), bytes32(uint256(34)),
-        bytes32(uint256(35)), bytes32(uint256(36)), bytes32(uint256(37)), bytes32(uint256(38)), bytes32(uint256(39)),
-        bytes32(uint256(40)), bytes32(uint256(41)), bytes32(uint256(42)), bytes32(uint256(43)), bytes32(uint256(44)),
-        bytes32(uint256(45)), bytes32(uint256(46)), bytes32(uint256(47)), bytes32(uint256(48)), bytes32(uint256(49)),
-        bytes32(uint256(50)), bytes32(uint256(51)),bytes32(uint256(52))
-  ];
-  
-  function getCards() public view returns (bytes32[52] memory) {
-    return CARDS;
-  }
-
   function isValidCard(bytes32 card) public pure returns (bool) {
     uint256 cardNumber = uint256(card);
     return cardNumber >= 1 && cardNumber <= 52;
@@ -45,6 +26,24 @@ contract GameSystem is System {
     Game.pushPlayers(gameId, msg.sender);
     Game.setState(gameId, GameState.Join);
     Game.setMaxPlayers(gameId, 3);
+    initCards(gameId);  
+  }
+
+  function initCards(bytes32 gameId) internal {
+    bytes32[52] memory CARDS  = [
+        bytes32(uint256(1)), bytes32(uint256(2)), bytes32(uint256(3)), bytes32(uint256(4)),
+        bytes32(uint256(5)), bytes32(uint256(6)), bytes32(uint256(7)), bytes32(uint256(8)), bytes32(uint256(9)),
+        bytes32(uint256(10)), bytes32(uint256(11)), bytes32(uint256(12)), bytes32(uint256(13)), bytes32(uint256(14)),
+        bytes32(uint256(15)), bytes32(uint256(16)), bytes32(uint256(17)), bytes32(uint256(18)), bytes32(uint256(19)),
+        bytes32(uint256(20)), bytes32(uint256(21)), bytes32(uint256(22)), bytes32(uint256(23)), bytes32(uint256(24)),
+        bytes32(uint256(25)), bytes32(uint256(26)), bytes32(uint256(27)), bytes32(uint256(28)), bytes32(uint256(29)),
+        bytes32(uint256(30)), bytes32(uint256(31)), bytes32(uint256(32)), bytes32(uint256(33)), bytes32(uint256(34)),
+        bytes32(uint256(35)), bytes32(uint256(36)), bytes32(uint256(37)), bytes32(uint256(38)), bytes32(uint256(39)),
+        bytes32(uint256(40)), bytes32(uint256(41)), bytes32(uint256(42)), bytes32(uint256(43)), bytes32(uint256(44)),
+        bytes32(uint256(45)), bytes32(uint256(46)), bytes32(uint256(47)), bytes32(uint256(48)), bytes32(uint256(49)),
+        bytes32(uint256(50)), bytes32(uint256(51)),bytes32(uint256(52))
+    ];
+
     Game.setCardsHash(gameId, CARDS);
   }
 
@@ -149,7 +148,7 @@ contract GameSystem is System {
       for(uint j = 0; j < keys.length; j++) {        
         card = rc4EncryptBytes32(card, keys[j]);
       }
-      if(isValidCard(card)) {
+      if(!isValidCard(card)) {
         Game.setState(gameId, GameState.Error);
         return;
       }
