@@ -9,6 +9,7 @@ import { world } from "./mud/world";
 import { createDatabase, createDatabaseClient } from "@latticexyz/store-cache";
 import config from "../../contracts/mud.config";
 import { PokerCards, CardType } from "./mud/cards";
+const playerNames = ['Alice', 'Bob', 'Carl']
 type Props = {
     gameId: string,
     game: {
@@ -146,6 +147,7 @@ export const Poker = (props: Props) => {
                                 </span>
                             }
                             <span className={'poker-user'}>
+                                {playerNames[idx]} --&nbsp;
                                 {
                                     wallet === walletAddress ? "YOU" : (wallet ? substrWalletText4(wallet) : '?')
                                 }
