@@ -46,7 +46,9 @@ export const App = () => {
             setIsJoinedGame(true)
             const params = URLSearchParams();
             const worldAddress = params.get('worldAddress') || ''
-            window.location.href = `${window.location.origin}/?dev=true&worldAddress=${worldAddress}&gameId=${gameId}`
+            const rpc = params.get('rpc') || ''
+            const wsRpc = params.get('wsRpc') || ''
+            window.location.href = `${window.location.origin}/?dev=true&worldAddress=${worldAddress}&rpc=${rpc}&wsRpc=${wsRpc}&gameId=${gameId}`
         } catch (error) {
             console.log(error)
             if (game && !game?.players.includes(walletAddress)) {

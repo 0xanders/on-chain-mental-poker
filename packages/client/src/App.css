@@ -1,6 +1,7 @@
 .app {
     width: 900px;
     margin: 50px auto 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
 }
 .game-warp {
     display: inline-block;
@@ -11,7 +12,7 @@
     margin: 0;
     font-size: 20px;
     font-weight: bold;
-    border:solid 2px #ebebeb;
+    border:solid 2px #FFCB00;;
     border-radius: 6px;
     margin-bottom: 10px;
     box-sizing: border-box;
@@ -32,10 +33,13 @@
     width: 100%;
     height: 700px;
     margin: 20 auto 0 auto;
-    background-color: #ebebeb;
     padding: 20px;
     border-radius: 10px;
     box-sizing: border-box;
+    background-image: url('./bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 .form {
     display: block;
@@ -51,7 +55,7 @@
     height: 60px;
     line-height: 58px;
     border-radius: 8px;
-    border: 2px solid #ebebeb;
+    border: none;
     color: #333;
     padding: 0 15px;
     font-size: 16px;
@@ -99,23 +103,27 @@
     padding: 20px;
     border-radius: 10px;
     box-sizing: border-box;
+    background-image: url('./bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 .poker-item {
     position: absolute;
     display: inline-block;
-    width: 150px;
+    width: 140px;
     text-align: center;
 }
 .poker-item:nth-child(1) {
-    top: 10px;
+    top: 20px;
     left: 20px;
 }
 .poker-item:nth-child(2) {
-    top: 10px;
+    top: 20px;
     right: 20px;
 }
 .poker-item:nth-child(3) {
-    bottom: 20px;
+    bottom: 15px;
     left: 50%;
     transform: translateX(-50px);
 }
@@ -125,6 +133,8 @@
     height: 180px;
     line-height: 144px;
     font-size: 200px;
+    background-color: #fff;
+    border-radius: 6px;
 }
 .poker-item .poker-card.no-card {
     line-height: 180px;
@@ -139,7 +149,9 @@
     border-radius: 8px;
     border: solid 1px #FFCB00;
     background-color: #FFCB00;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    user-select: none;
 }
 @keyframes breathe {
     0% {
@@ -168,11 +180,13 @@
 .poker-item .poker-user {
     display: block;
     width: 100%;
-    height: 20px;
-    line-height: 20px;
+    height: 16px;
+    line-height: 16px;
     text-align: center;
-    color: #000;
+    color: #333;
     font-size: 14px;
+    font-weight: bold;
+    user-select: none;
 }
 .poker-item .btn-tool {
     margin: 10px 0;
@@ -185,12 +199,10 @@
 }
 @keyframes winner-breathe {
     0% {
-      font-size: 14px;  
       box-shadow: 0 0 5px rgba(0, 255, 0, 0);
     }
     100% {
-      font-size: 24px;  
-      color: green;
+      font-size: 26px;  
       box-shadow: 0 0 20px #FFCB00;
     }
 }
@@ -198,7 +210,7 @@
     pointer-events: none;
     font-size: 18px;
     border-radius: 8px;
-    font-weight: bold;
+    color: green;
     border: solid 1px #FFCB00;
     background-color: #FFCB00;
     animation-timing-function: ease-in-out;
@@ -210,8 +222,9 @@
     transform: translate3d(0,0,0);
 }
 .poker-item .btn-tool.fail {
-    border-color: rgba(121, 111, 111, .3);
-    background-color: rgba(121, 111, 111, .3);
+    border: solid 1px #c8b76b;
+    background-color: #c8b76b;
+    cursor: no-drop;
     color: red;
 }
 
