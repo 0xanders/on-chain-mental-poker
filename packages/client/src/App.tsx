@@ -29,6 +29,7 @@ const getGameState = (state: number) => {
 export const App = () => {
     const { walletAddress, components: { Game }, systemCalls: { createGame, joinInGame } } = useMUD();
     const [gameId, setGameId] = useState('')
+    const [errorTip, setErrorTips] = useState('');
     const [isJoinedGame, setIsJoinedGame] = useState(false)
     const byte32GameId = ethers.utils.formatBytes32String(gameId);
     const gameEntity = world.registerEntity({ id: byte32GameId })
@@ -36,15 +37,28 @@ export const App = () => {
     console.log('game-----')
     console.log(game)
     const createOrJoinGame = async () => {
-        if (game && !game?.players.includes(walletAddress)) {
-            await joinInGame(gameId)
-        } else if (!game) {
-            await createGame(gameId)
+        try {
+            if (game && !game?.players.includes(walletAddress)) {
+                await joinInGame(gameId)
+            } else if (!game) {
+                await createGame(gameId)
+            }
+            setIsJoinedGame(true)
+            const params = URLSearchParams();
+            const worldAddress = params.get('worldAddress') || ''
+            window.location.href = `${window.location.origin}/?dev=true&worldAddress=${worldAddress}&gameId=${gameId}`
+        } catch (error) {
+            console.log(error)
+            if (game && !game?.players.includes(walletAddress)) {
+                setErrorTips('The game has already started, cannot continue to join')
+            } else if (!game) {
+                setErrorTips('The game has already created, cannot continue to create')
+            }
+            const st = setTimeout(() => {
+                clearTimeout(st)
+                setErrorTips('')
+            }, 3000)
         }
-        setIsJoinedGame(true)
-        const params = URLSearchParams();
-        const worldAddress = params.get('worldAddress') || ''
-        window.location.href = `${window.location.origin}/?dev=true&worldAddress=${worldAddress}&gameId=${gameId}`
     }
     useEffect(() => {
         if (game) {
@@ -65,18 +79,22 @@ export const App = () => {
     })
     return (
         <div className={'app'}>
-            <ul className={'game-warp'}>
-                <li>state: <span>{getGameState(game?.state)}</span></li>
-                <li>turn: <span>{game?.turn}</span></li>
-                <li>wallet: <span>{walletAddress}</span></li>
-            </ul>
+            <div className={'game-warp'}>
+                <span>State: <span>{getGameState(game?.state)}</span></span>
+                <span>Wallet: <span>{walletAddress}</span></span>
+            </div>
             {
                 isJoinedGame ? <Poker game={game} gameId={gameId} /> : <>
-                    <div className={'form'}>
-                        <input value={gameId} placeholder={'Please enter gameID'} onChange={(e: any) => {
-                            setGameId(e.target.value || '')
-                        }} />
-                        <button onClick={createOrJoinGame}>{game ? 'Join Game' : 'Create Game'}</button>
+                    <div className={'form-warp'}>
+                        <div className={'form'}>
+                            <input value={gameId} placeholder={'Please enter gameID'} onChange={(e: any) => {
+                                setGameId(e.target.value || '')
+                            }} />
+                            <button onClick={createOrJoinGame}>{game ? 'Join Game' : 'Create Game'}</button>
+                            {
+                                errorTip && <span className={'error-tips'}>{errorTip}</span>
+                            }
+                        </div>
                     </div>
                 </>
             }

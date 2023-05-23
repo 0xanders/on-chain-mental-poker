@@ -101,15 +101,18 @@ export const Poker = (props: Props) => {
                                     }}>
                                         {playerCards[idx]?.value}
                                     </span> :
-                                    <span className={'poker-card'} style={{
+                                    <span className={`poker-card ${props.game.state <= 2 ? 'no-card' : ''}`} style={{
                                         color: (wallet === walletAddress ? selfCard.color : '#000')
                                     }}>
-                                        {(props.game.state > 1 && props.game.state !== GameState.Finished) ? (wallet === walletAddress ? selfCard.value : '🂠') : ''}
+                                        {(props.game.state > 2 && props.game.state !== GameState.Finished) ? (wallet === walletAddress ? selfCard.value : '🂠') : '?'}
                                     </span>
                             }
                             {
                                 (props.game.state !== GameState.Join && props.game.state !== GameState.Finished) &&
                                 <span className={`btn-tool ${wallet === walletAddress && props.game.turn === idx ? '' : 'disable'}`} onClick={clickTool}>
+                                    {
+                                        props.game.turn === idx && <span className={'turn-user'} />
+                                    }
                                     {
                                         props.game.state === GameState.Shuffle && <>Shuffle</>
                                     }
@@ -137,7 +140,7 @@ export const Poker = (props: Props) => {
                                     wallet ? substrWalletText4(wallet) : '?'
                                 }
                                 {
-                                    wallet === walletAddress && " (YOU)"
+                                    wallet === walletAddress && "(YOU)"
                                 }
                             </span>
                         </div>
