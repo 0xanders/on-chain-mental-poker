@@ -113,6 +113,7 @@
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    user-select: none;
 }
 .poker-item {
     position: absolute;
@@ -177,7 +178,7 @@
     background-color: green;
     border-radius: 50%;
     vertical-align: middle;
-    margin-right: 6px;
+    margin-right: 3px;
     animation-timing-function: ease-in-out;
     animation-name: breathe;
     animation-duration: 600ms;
@@ -199,6 +200,36 @@
 .poker-item .btn-tool {
     margin-top: 10px;
     cursor: pointer;
+}
+.poker-item .btn-tool.loading-btn {
+    position: relative;
+    pointer-events: none;
+    border: solid 1px #dacc95;
+    background-color: #dacc95;
+}
+@keyframes gogogo {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.poker-item .btn-tool.loading-btn::before {
+    display: inline-block;
+    content: '';
+    width: 15px;
+    height: 15px;
+    vertical-align: -3px;
+    margin-right: 10px;
+    background-image: url(./loading.png);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    animation: gogogo 1s infinite linear;
 }
 .poker-item .btn-tool.disable {
     pointer-events: none;

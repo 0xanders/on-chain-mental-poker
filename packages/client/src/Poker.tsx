@@ -22,7 +22,7 @@ type Props = {
 };
 export const Poker = (props: Props) => {
     const {
-        walletAddress, client,
+        walletAddress,
         components: { HandCard },
         network: { storeCache },
         systemCalls: { shuffleAndSave, dealCards, decryptForOthers, uploadSecretKey } } = useMUD();
@@ -36,39 +36,44 @@ export const Poker = (props: Props) => {
         color: '#000'
     } as CardType);
     const [playerCards, setPlayerCards] = useState([] as Array<CardType>);
-    console.log('handCard--01-----')
-    console.log(handCard);
+    const [loadingBtn, setLoadingBtn] = useState(false);
     const clickTool = () => {
-        if (props.game.state === GameState.Shuffle) {
-            let cardArr = [...props.game.cardsHash];
-            const secretKey = getSecretKey();
-            cardArr = encryptCards(cardArr, secretKey);
-            cardArr = randowArray(cardArr);
-            const msgToSign = "0xPoker";
-            const msgToSignHex = asciiToHex(msgToSign);
-            const msgToSignByte = ethers.utils.hexZeroPad(msgToSignHex, 32);
-            const resultOfSign = encryptMsg(msgToSign, secretKey);
-            shuffleAndSave(props.gameId, msgToSignByte, resultOfSign, cardArr)
-        } else if (props.game.state === GameState.DealCards) {
-            dealCards(props.gameId)
-        } else if (props.game.state === GameState.DecryptForOthers) {
-            const otherPlayers = [...props.game.players]
-            const selfIdx = otherPlayers.indexOf(walletAddress)
-            otherPlayers.splice(selfIdx, 1)
-            const tempCardsHash = otherPlayers.map((walletStr) => {
-                const otherEncodedData = ethers.utils.solidityPack(['bytes32', 'address'], [byte32GameId, walletStr]);
-                const otherHandCardId = ethers.utils.keccak256(otherEncodedData);
-                const result = storeCache.tables.HandCard.get({ id: otherHandCardId })
-                return result.tempCardHash
-            })
-            const secretKey = getSecretKey();
-            const tempCardsHashByte32 = encryptCards(tempCardsHash, secretKey);
-            decryptForOthers(props.gameId, otherPlayers, tempCardsHashByte32)
-        } else if (props.game.state === GameState.UploadSecret) {
-            const secretKey = getSecretKey();
-            const msgToSignHex = asciiToHex(secretKey);
-            const msgToSignByte = ethers.utils.hexZeroPad(msgToSignHex, 32);
-            uploadSecretKey(props.gameId, msgToSignByte)
+        if (loadingBtn) return;
+        setLoadingBtn(true);
+        try {
+            if (props.game.state === GameState.Shuffle) {
+                let cardArr = [...props.game.cardsHash];
+                const secretKey = getSecretKey();
+                cardArr = encryptCards(cardArr, secretKey);
+                cardArr = randowArray(cardArr);
+                const msgToSign = "0xPoker";
+                const msgToSignHex = asciiToHex(msgToSign);
+                const msgToSignByte = ethers.utils.hexZeroPad(msgToSignHex, 32);
+                const resultOfSign = encryptMsg(msgToSign, secretKey);
+                shuffleAndSave(props.gameId, msgToSignByte, resultOfSign, cardArr)
+            } else if (props.game.state === GameState.DealCards) {
+                dealCards(props.gameId)
+            } else if (props.game.state === GameState.DecryptForOthers) {
+                const otherPlayers = [...props.game.players]
+                const selfIdx = otherPlayers.indexOf(walletAddress)
+                otherPlayers.splice(selfIdx, 1)
+                const tempCardsHash = otherPlayers.map((walletStr) => {
+                    const otherEncodedData = ethers.utils.solidityPack(['bytes32', 'address'], [byte32GameId, walletStr]);
+                    const otherHandCardId = ethers.utils.keccak256(otherEncodedData);
+                    const result = storeCache.tables.HandCard.get({ id: otherHandCardId })
+                    return result.tempCardHash
+                })
+                const secretKey = getSecretKey();
+                const tempCardsHashByte32 = encryptCards(tempCardsHash, secretKey);
+                decryptForOthers(props.gameId, otherPlayers, tempCardsHashByte32)
+            } else if (props.game.state === GameState.UploadSecret) {
+                const secretKey = getSecretKey();
+                const msgToSignHex = asciiToHex(secretKey);
+                const msgToSignByte = ethers.utils.hexZeroPad(msgToSignHex, 32);
+                uploadSecretKey(props.gameId, msgToSignByte)
+            }
+        } catch (error) {
+            setLoadingBtn(false)
         }
     }
     useEffect(() => {
@@ -85,9 +90,14 @@ export const Poker = (props: Props) => {
                 const intValue = (Number(BigNumber.from(result.card).toString(10)) - 1).toString()
                 return PokerCards[intValue] as CardType;
             })
-            setPlayerCards(showCards)
+            setPlayerCards(showCards);
         }
     }, [props.game, handCard])
+    useEffect(() => {
+        if (props.game.turn) {
+            setLoadingBtn(false)
+        }
+    }, [props.game?.turn])
     return (
         <div className={'poker-warp'}>
             {
@@ -109,7 +119,7 @@ export const Poker = (props: Props) => {
                             }
                             {
                                 (props.game.state !== GameState.Join && props.game.state !== GameState.Finished) &&
-                                <span className={`btn-tool ${wallet === walletAddress && props.game.turn === idx ? '' : 'disable'}`} onClick={clickTool}>
+                                <span className={`btn-tool ${wallet === walletAddress && loadingBtn ? 'loading-btn' : ''} ${wallet === walletAddress && props.game.turn === idx ? '' : 'disable'}`} onClick={clickTool}>
                                     {
                                         props.game.turn === idx && <span className={'turn-user'} />
                                     }
