@@ -28,7 +28,6 @@ const getGameState = (state: number) => {
             return 'Create'
     }
 }
-const playerNames = ['Alice', 'Bob', 'Carl']
 export const App = () => {
     const { walletAddress, components: { Game, LoadingState }, network: { singletonEntity }, systemCalls: { createGame, joinInGame } } = useMUD();
     const [gameId, setGameId] = useState('')
