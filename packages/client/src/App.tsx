@@ -33,6 +33,7 @@ export const App = () => {
     const [gameId, setGameId] = useState('')
     const [errorTip, setErrorTips] = useState('');
     const [isJoinedGame, setIsJoinedGame] = useState(false)
+    const [loadingBtn, setLoadingBtn] = useState(false);
     const byte32GameId = ethers.utils.formatBytes32String(gameId);
     const gameEntity = world.registerEntity({ id: byte32GameId })
     const game = useComponentValue(Game, gameEntity);
@@ -44,7 +45,9 @@ export const App = () => {
         percentage: 0,
     })
     const createOrJoinGame = async () => {
+        if (loadingBtn) return;
         try {
+            setLoadingBtn(true);
             if (game && !game?.players.includes(walletAddress)) {
                 await joinInGame(gameId)
             } else if (!game) {
@@ -70,12 +73,15 @@ export const App = () => {
                 clearTimeout(st)
                 setErrorTips('')
             }, 3000)
+        } finally {
+            setLoadingBtn(false);
         }
     }
     useEffect(() => {
         if (game) {
             const joined = game?.players.includes(walletAddress)
             setIsJoinedGame(joined)
+            setLoadingBtn(false)
         } else {
             setIsJoinedGame(false)
         }
@@ -102,7 +108,7 @@ export const App = () => {
                             <input value={gameId} placeholder={'Please enter gameID'} onChange={(e: any) => {
                                 setGameId(e.target.value || '')
                             }} />
-                            <button onClick={createOrJoinGame}>{game ? 'Join Game' : 'Create Game'}</button>
+                            <button className={`${loadingBtn ? 'loading-btn' : ''}`} onClick={createOrJoinGame}>{game ? 'Join Game' : 'Create Game'}</button>
                             {
                                 errorTip && <span className={'error-tips'}>{errorTip}</span>
                             }

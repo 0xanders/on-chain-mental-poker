@@ -51,7 +51,7 @@
 }
 .form input {
     display: inline-block;
-    width: calc(100% - 170px);
+    width: calc(100% - 190px);
     height: 60px;
     line-height: 60px;
     border-radius: 8px;
@@ -68,9 +68,20 @@
 .form input ::-webkit-input-placeholder {
      color: #e2e2e2;
 }
+@keyframes gogogo {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 .form button {
     display: inline-block;
-    width: 150px;
+    width: 170px;
     height: 60px;
     line-height: 60px;
     padding: 0 10px;
@@ -86,6 +97,25 @@
     cursor: pointer;
     vertical-align: middle;
     transition: all .2s;
+}
+.form button.loading-btn {
+    position: relative;
+    pointer-events: none;
+    border: solid 1px #dacc95;
+    background-color: #dacc95;
+}
+.form button.loading-btn::before {
+    display: inline-block;
+    content: '';
+    width: 15px;
+    height: 15px;
+    vertical-align: -3px;
+    margin-right: 10px;
+    background-image: url(./loading.png);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    animation: gogogo 1s infinite linear;
 }
 .form button:hover {
     border-color: #FFCB00;
@@ -206,17 +236,6 @@
     pointer-events: none;
     border: solid 1px #dacc95;
     background-color: #dacc95;
-}
-@keyframes gogogo {
-    0% {
-      transform: rotate(0deg);
-    }
-    50% {
-        transform: rotate(180deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
 }
 .poker-item .btn-tool.loading-btn::before {
     display: inline-block;
