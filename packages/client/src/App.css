@@ -8,18 +8,18 @@
     width: 100%;
     list-style: none;
     text-align: center;
-    padding: 5px 0;
+    padding: 3px 0;
     margin: 0;
     font-size: 20px;
     font-weight: bold;
-    background-color: #FFCB00;
+    background-color: #FFDC00;
     border-radius: 5px;
     margin-bottom: 10px;
     box-sizing: border-box;
 }
 .game-warp span {
     display: inline-block;
-    padding: 10px;
+    padding: 10px 15px 10px 5px;
     line-height: 18px;
 }
 .game-warp span span{
@@ -53,12 +53,12 @@
     display: inline-block;
     width: calc(100% - 170px);
     height: 60px;
-    line-height: 58px;
+    line-height: 60px;
     border-radius: 8px;
     border: none;
     color: #333;
     padding: 0 15px;
-    font-size: 16px;
+    font-size: 20px;
     outline: none;
     vertical-align: middle;
     font-weight: bold;
@@ -76,14 +76,20 @@
     padding: 0 10px;
     box-sizing: border-box;
     user-select: none;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
     color: #333;
     border-radius: 8px;
-    border: solid 1px #FFCB00;
-    background-color: #FFCB00;
+    border: solid 1px #FFDC00;
+    background-color: #FFDC00;
     margin-left: 20px;
     cursor: pointer;
     vertical-align: middle;
+    transition: all .2s;
+}
+.form button:hover {
+    border-color: #FFCB00;
+    background-color: #FFCB00;
 }
 .form .error-tips {
     display: block;

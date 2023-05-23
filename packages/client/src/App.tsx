@@ -23,7 +23,8 @@ const getGameState = (state: number) => {
             return 'Error'
         case GameState.Finished:
             return 'Finished'
-            return 'Join'
+        default:
+            return 'Create'
     }
 }
 export const App = () => {
