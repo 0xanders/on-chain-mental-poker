@@ -15,7 +15,7 @@ const getGameState = (state: number) => {
         case GameState.Shuffle:
             return 'Shuffle'
         case GameState.DealCards:
-            return 'DealCards'
+            return 'Pick Up'
         case GameState.DecryptForOthers:
             return 'DecryptForOthers'
         case GameState.UploadSecret:
