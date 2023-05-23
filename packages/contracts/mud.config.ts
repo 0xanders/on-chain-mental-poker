@@ -1,6 +1,7 @@
 import { mudConfig } from "@latticexyz/world/register";
-
+import "@latticexyz/world/snapsync";
 export default mudConfig({
+  snapSync: true,
   enums: {
     GameState: ["Join", "Shuffle", "DealCards", "DecryptForOthers", "UploadSecret", "Error", "Finished"]
   },
