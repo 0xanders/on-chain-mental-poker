@@ -15,7 +15,7 @@ const getGameState = (state: number) => {
         case GameState.Shuffle:
             return 'Shuffle'
         case GameState.DealCards:
-            return 'DealCards'
+            return 'Pick Up'
         case GameState.DecryptForOthers:
             return 'DecryptForOthers'
         case GameState.UploadSecret:
@@ -29,10 +29,23 @@ const getGameState = (state: number) => {
     }
 }
 export const App = () => {
-    const { walletAddress, components: { Game, LoadingState }, network: { singletonEntity }, systemCalls: { createGame, joinInGame } } = useMUD();
+    const {
+        walletAddress,
+        components: {
+            Game, LoadingState
+        },
+        network: {
+            singletonEntity
+        },
+        systemCalls: {
+            createGame, joinInGame
+        }
+    } = useMUD();
     const [gameId, setGameId] = useState('')
     const [errorTip, setErrorTips] = useState('');
     const [isJoinedGame, setIsJoinedGame] = useState(false)
+    const [loadingBtn, setLoadingBtn] = useState(false);
+    const [initData, setInitData] = useState(false);
     const byte32GameId = ethers.utils.formatBytes32String(gameId);
     const gameEntity = world.registerEntity({ id: byte32GameId })
     const game = useComponentValue(Game, gameEntity);
@@ -44,7 +57,9 @@ export const App = () => {
         percentage: 0,
     })
     const createOrJoinGame = async () => {
+        if (loadingBtn) return;
         try {
+            setLoadingBtn(true);
             if (game && !game?.players.includes(walletAddress)) {
                 await joinInGame(gameId)
             } else if (!game) {
@@ -70,12 +85,15 @@ export const App = () => {
                 clearTimeout(st)
                 setErrorTips('')
             }, 3000)
+        } finally {
+            setLoadingBtn(false);
         }
     }
     useEffect(() => {
         if (game) {
             const joined = game?.players.includes(walletAddress)
             setIsJoinedGame(joined)
+            setLoadingBtn(false)
         } else {
             setIsJoinedGame(false)
         }
@@ -89,6 +107,11 @@ export const App = () => {
             setIsJoinedGame(false)
         }
     })
+    useEffect(() => {
+        if (loadingState.state === SyncState.LIVE) {
+            setInitData(true)
+        }
+    }, [loadingState.state])
     return (
         <div className={'app'}>
             <div className={'game-warp'}>
@@ -96,18 +119,30 @@ export const App = () => {
                 <span>Wallet: <span>{walletAddress}</span></span>
             </div>
             {
-                isJoinedGame ? <Poker game={game} gameId={gameId} /> : <>
-                    <div className={'form-warp'}>
-                        <div className={'form'}>
-                            <input value={gameId} placeholder={'Please enter gameID'} onChange={(e: any) => {
-                                setGameId(e.target.value || '')
-                            }} />
-                            <button onClick={createOrJoinGame}>{game ? 'Join Game' : 'Create Game'}</button>
-                            {
-                                errorTip && <span className={'error-tips'}>{errorTip}</span>
-                            }
-                        </div>
-                    </div>
+                !initData ? 
+                <div style={{
+                    textAlign: 'center',
+                    fontSize: '24px',
+                    marginTop: '20px',
+                    color: 'green'
+                }}>
+                    {loadingState.msg}&nbsp;&nbsp;&nbsp;&nbsp;({Math.floor(loadingState.percentage)}%)
+                </div> : <>
+                    {
+                        isJoinedGame ? <Poker game={game} gameId={gameId} /> : <>
+                            <div className={'form-warp'}>
+                                <div className={'form'}>
+                                    <input value={gameId} placeholder={'Please enter gameID'} onChange={(e: any) => {
+                                        setGameId(e.target.value || '')
+                                    }} />
+                                    <button className={`${loadingBtn ? 'loading-btn' : ''}`} onClick={createOrJoinGame}>{game ? 'Join Game' : 'Create Game'}</button>
+                                    {
+                                        errorTip && <span className={'error-tips'}>{errorTip}</span>
+                                    }
+                                </div>
+                            </div>
+                        </>
+                    }
                 </>
             }
         </div>

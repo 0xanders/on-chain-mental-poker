@@ -90,6 +90,10 @@ export function randowArray(arr: Array<any>){
         const j = Math.floor(Math.random() * i--);
         [arr[j], arr[i]] = [arr[i], arr[j]];
     }
+    while (i) {
+        const j = Math.floor(Math.random() * i--);
+        [arr[j], arr[i]] = [arr[i], arr[j]];
+    }
     return arr
 }
 export function utf8Key(key: string): string {

@@ -126,7 +126,7 @@ export const Poker = (props: Props) => {
                                         props.game.state === GameState.Shuffle && <>Shuffle</>
                                     }
                                     {
-                                        props.game.state === GameState.DealCards && <>DealCards</>
+                                        props.game.state === GameState.DealCards && <>Pick Up</>
                                     }
                                     {
                                         props.game.state === GameState.DecryptForOthers && <>DecryptForOthers</>
