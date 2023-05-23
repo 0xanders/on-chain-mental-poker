@@ -95,9 +95,7 @@ export const Poker = (props: Props) => {
         }
     }, [props.game, handCard])
     useEffect(() => {
-        if (props.game.turn) {
-            setLoadingBtn(false)
-        }
+        setLoadingBtn(false)
     }, [props.game?.turn])
     return (
         <div className={'poker-warp'}>
