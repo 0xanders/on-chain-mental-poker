@@ -1,24 +1,25 @@
 .app {
     width: 900px;
     margin: 50px auto 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
 }
 .game-warp {
     display: inline-block;
     width: 100%;
     list-style: none;
     text-align: center;
-    padding: 5px 0;
+    padding: 3px 0;
     margin: 0;
     font-size: 20px;
     font-weight: bold;
-    border:solid 2px #ebebeb;
-    border-radius: 6px;
+    background-color: #FFDC00;
+    border-radius: 5px;
     margin-bottom: 10px;
     box-sizing: border-box;
 }
 .game-warp span {
     display: inline-block;
-    padding: 10px;
+    padding: 10px 15px 10px 5px;
     line-height: 18px;
 }
 .game-warp span span{
@@ -32,10 +33,13 @@
     width: 100%;
     height: 700px;
     margin: 20 auto 0 auto;
-    background-color: #ebebeb;
     padding: 20px;
     border-radius: 10px;
     box-sizing: border-box;
+    background-image: url('./bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 .form {
     display: block;
@@ -49,12 +53,12 @@
     display: inline-block;
     width: calc(100% - 170px);
     height: 60px;
-    line-height: 58px;
+    line-height: 60px;
     border-radius: 8px;
-    border: 2px solid #ebebeb;
+    border: none;
     color: #333;
     padding: 0 15px;
-    font-size: 16px;
+    font-size: 20px;
     outline: none;
     vertical-align: middle;
     font-weight: bold;
@@ -72,14 +76,20 @@
     padding: 0 10px;
     box-sizing: border-box;
     user-select: none;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
     color: #333;
     border-radius: 8px;
-    border: solid 1px #FFCB00;
-    background-color: #FFCB00;
+    border: solid 1px #FFDC00;
+    background-color: #FFDC00;
     margin-left: 20px;
     cursor: pointer;
     vertical-align: middle;
+    transition: all .2s;
+}
+.form button:hover {
+    border-color: #FFCB00;
+    background-color: #FFCB00;
 }
 .form .error-tips {
     display: block;
@@ -93,41 +103,49 @@
     position: relative;
     display: inline-block;
     width: 100%;
-    height: 700px;
+    height: 800px;
     margin: 20 auto 0 auto;
     background-color: #ebebeb;
     padding: 20px;
     border-radius: 10px;
     box-sizing: border-box;
+    background-image: url('./bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    user-select: none;
 }
 .poker-item {
     position: absolute;
     display: inline-block;
-    width: 150px;
+    width: 180px;
     text-align: center;
 }
 .poker-item:nth-child(1) {
-    top: 10px;
+    top: 20px;
     left: 20px;
 }
 .poker-item:nth-child(2) {
-    top: 10px;
+    top: 20px;
     right: 20px;
 }
 .poker-item:nth-child(3) {
-    bottom: 20px;
+    bottom: 15px;
     left: 50%;
     transform: translateX(-50px);
 }
 .poker-item .poker-card {
     display: inline-block;
     width: 100%;
-    height: 180px;
-    line-height: 144px;
-    font-size: 200px;
+    height: 234px;
+    line-height: 190px;
+    font-size: 260px;
+    background-color: #fff;
+    border-radius: 6px;
+    padding-right: 1px;
 }
 .poker-item .poker-card.no-card {
-    line-height: 180px;
+    line-height: 244px;
 }
 .poker-item .btn-tool {
     display: block;
@@ -135,10 +153,13 @@
     height: 40px;
     line-height: 40px;
     text-align: center;
-    background-color: green;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 14px;
+    color: #333;
+    border-radius: 8px;
+    border: solid 1px #FFCB00;
+    background-color: #FFCB00;
+    font-size: 16px;
+    font-weight: bold;
+    user-select: none;
 }
 @keyframes breathe {
     0% {
@@ -157,7 +178,7 @@
     background-color: green;
     border-radius: 50%;
     vertical-align: middle;
-    margin-right: 6px;
+    margin-right: 3px;
     animation-timing-function: ease-in-out;
     animation-name: breathe;
     animation-duration: 600ms;
@@ -167,45 +188,82 @@
 .poker-item .poker-user {
     display: block;
     width: 100%;
-    height: 20px;
-    line-height: 20px;
+    height: 16px;
+    line-height: 16px;
     text-align: center;
-    color: #000;
+    color: #333;
     font-size: 14px;
+    font-weight: bold;
+    user-select: none;
+    margin-top: 10px;
 }
 .poker-item .btn-tool {
-    margin: 10px 0;
+    margin-top: 10px;
     cursor: pointer;
+}
+.poker-item .btn-tool.loading-btn {
+    position: relative;
+    pointer-events: none;
+    border: solid 1px #dacc95;
+    background-color: #dacc95;
+}
+@keyframes gogogo {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.poker-item .btn-tool.loading-btn::before {
+    display: inline-block;
+    content: '';
+    width: 15px;
+    height: 15px;
+    vertical-align: -3px;
+    margin-right: 10px;
+    background-image: url(./loading.png);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    animation: gogogo 1s infinite linear;
 }
 .poker-item .btn-tool.disable {
     pointer-events: none;
-    background-color: rgba(121, 111, 111, .3);
+    border-color: rgba(121, 111, 111, .5);
+    background-color: rgba(121, 111, 111, .5);
 }
 @keyframes winner-breathe {
     0% {
-      font-size: 14px;  
-      color: rgb(207, 233, 235);
       box-shadow: 0 0 5px rgba(0, 255, 0, 0);
     }
     100% {
-      font-size: 18px;  
-      color: red;
-      box-shadow: 0 0 15px rgba(0, 255, 0, 1);
+      font-size: 26px;  
+      box-shadow: 0 0 20px #FFCB00;
     }
 }
 .poker-item .btn-tool.winner {
     pointer-events: none;
-    color: rgb(207, 233, 235);
     font-size: 18px;
-    background-color: green;
+    border-radius: 8px;
+    color: green;
+    border: solid 1px #FFCB00;
+    background-color: #FFCB00;
     animation-timing-function: ease-in-out;
     animation-name: winner-breathe;
-    animation-duration: 600ms;
+    animation-duration: 1000ms;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+    transition: all 1s;
+    transform: translate3d(0,0,0);
 }
 .poker-item .btn-tool.fail {
-    background-color: gray;
+    border-color: rgba(121, 111, 111, .5);
+    background-color: rgba(121, 111, 111, .5);
+    cursor: no-drop;
     color: red;
 }
 

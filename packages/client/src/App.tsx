@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Poker } from "./Poker";
 import { useMount } from "ahooks";
 import { GameState, URLSearchParams } from "./util";
+import { SyncState } from "@latticexyz/network";
 const getGameState = (state: number) => {
     switch (state) {
         case GameState.Join:
@@ -23,11 +24,12 @@ const getGameState = (state: number) => {
             return 'Error'
         case GameState.Finished:
             return 'Finished'
-            return 'Join'
+        default:
+            return 'Create'
     }
 }
 export const App = () => {
-    const { walletAddress, components: { Game }, systemCalls: { createGame, joinInGame } } = useMUD();
+    const { walletAddress, components: { Game, LoadingState }, network: { singletonEntity }, systemCalls: { createGame, joinInGame } } = useMUD();
     const [gameId, setGameId] = useState('')
     const [errorTip, setErrorTips] = useState('');
     const [isJoinedGame, setIsJoinedGame] = useState(false)
@@ -36,6 +38,11 @@ export const App = () => {
     const game = useComponentValue(Game, gameEntity);
     console.log('game-----')
     console.log(game)
+    const loadingState = useComponentValue(LoadingState, singletonEntity, {
+        state: SyncState.CONNECTING,
+        msg: 'Connecting',
+        percentage: 0,
+    })
     const createOrJoinGame = async () => {
         try {
             if (game && !game?.players.includes(walletAddress)) {
@@ -45,8 +52,13 @@ export const App = () => {
             }
             setIsJoinedGame(true)
             const params = URLSearchParams();
+            const urlGameId = params.get('gameId') || ''
             const worldAddress = params.get('worldAddress') || ''
-            window.location.href = `${window.location.origin}/?dev=true&worldAddress=${worldAddress}&gameId=${gameId}`
+            const rpc = params.get('rpc') || ''
+            const wsRpc = params.get('wsRpc') || ''
+            if (!urlGameId) {
+                window.location.href = `${window.location.origin}/?dev=true&worldAddress=${worldAddress}&rpc=${rpc}&wsRpc=${wsRpc}&gameId=${gameId}`
+            }
         } catch (error) {
             console.log(error)
             if (game && !game?.players.includes(walletAddress)) {

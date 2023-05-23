@@ -10,7 +10,7 @@ export async function setup() {
   const network = await setupNetwork();
   const components = createClientComponents(network);
   const systemCalls = createSystemCalls(network, components);
-  const privateKey = getBurnerWallet().value
+  const privateKey = getBurnerWallet().value;
   const wallet = new ethers.Wallet(privateKey);
   
   return {
