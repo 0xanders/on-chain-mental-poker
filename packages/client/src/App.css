@@ -135,9 +135,10 @@
     height: 40px;
     line-height: 40px;
     text-align: center;
-    background-color: green;
-    border-radius: 5px;
-    color: #fff;
+    color: #333;
+    border-radius: 8px;
+    border: solid 1px #FFCB00;
+    background-color: #FFCB00;
     font-size: 14px;
 }
 @keyframes breathe {
@@ -179,33 +180,38 @@
 }
 .poker-item .btn-tool.disable {
     pointer-events: none;
+    border-color: rgba(121, 111, 111, .3);
     background-color: rgba(121, 111, 111, .3);
 }
 @keyframes winner-breathe {
     0% {
       font-size: 14px;  
-      color: rgb(207, 233, 235);
       box-shadow: 0 0 5px rgba(0, 255, 0, 0);
     }
     100% {
-      font-size: 18px;  
-      color: red;
-      box-shadow: 0 0 15px rgba(0, 255, 0, 1);
+      font-size: 24px;  
+      color: green;
+      box-shadow: 0 0 20px #FFCB00;
     }
 }
 .poker-item .btn-tool.winner {
     pointer-events: none;
-    color: rgb(207, 233, 235);
     font-size: 18px;
-    background-color: green;
+    border-radius: 8px;
+    font-weight: bold;
+    border: solid 1px #FFCB00;
+    background-color: #FFCB00;
     animation-timing-function: ease-in-out;
     animation-name: winner-breathe;
-    animation-duration: 600ms;
+    animation-duration: 1000ms;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+    transition: all 1s;
+    transform: translate3d(0,0,0);
 }
 .poker-item .btn-tool.fail {
-    background-color: gray;
+    border-color: rgba(121, 111, 111, .3);
+    background-color: rgba(121, 111, 111, .3);
     color: red;
 }
 
