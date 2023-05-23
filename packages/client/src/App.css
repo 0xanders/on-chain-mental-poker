@@ -12,8 +12,8 @@
     margin: 0;
     font-size: 20px;
     font-weight: bold;
-    border:solid 2px #FFCB00;;
-    border-radius: 6px;
+    background-color: #FFCB00;
+    border-radius: 5px;
     margin-bottom: 10px;
     box-sizing: border-box;
 }
